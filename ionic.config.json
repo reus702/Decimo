@@ -1,0 +1,7 @@
+{
+  "name": "Decimo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
