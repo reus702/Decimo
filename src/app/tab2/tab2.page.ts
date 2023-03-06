@@ -36,7 +36,6 @@ export class Tab2Page {
         {
           text: 'Conferma',
           handler: (value) => {
-            window.alert(`You selected: ${value.number_player.value}`);
             this.number_player =  value.number_player.value;
           },
 
