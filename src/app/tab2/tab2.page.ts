@@ -14,16 +14,18 @@ export class Tab2Page {
   }
 
   async openPicker() {
+    const options = [];
+    for (let i = 1; i <= 20; i++) {
+      options.push({
+        text: i.toString(),
+        value: i.toString(),
+      });
+    }
     const picker = await this.pickerCtrl.create({
       columns: [
         {
           name: 'number_player',
-          options: [
-            {
-              text: 'JavaScript',
-              value: 'javascript',
-            }
-          ],
+          options: options,
         },
       ],
       buttons: [
@@ -42,5 +44,6 @@ export class Tab2Page {
 
     await picker.present();
   }
+  
 
 }
