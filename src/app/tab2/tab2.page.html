@@ -16,23 +16,24 @@
   <form>
     <ion-item lines="full">
       <ion-label>Giocatori mancanti</ion-label>
-
-      <ion-button (click)="openPicker()">Open</ion-button>
-    </ion-item>
-    <ion-item lines="full">
-      <ion-label position="floating">Informazioni aggiuntive</ion-label>
-      <ion-textarea type="text" required></ion-textarea>
+      <ion-button (click)="openPicker()">Numero giocatori mancanti: {{number_player}}</ion-button>
     </ion-item>
     
     <ion-item>
       <ion-label>Data e ora</ion-label>
       <ion-datetime-button datetime="datetime"></ion-datetime-button>
-      <ion-modal [keepContentsMounted]="true">
+      <ion-popover [keepContentsMounted]="true">
         <ng-template>
           <ion-datetime id="datetime"></ion-datetime>
         </ng-template>
-      </ion-modal>
+      </ion-popover>
     </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Informazioni aggiuntive</ion-label>
+      <ion-textarea type="text" required></ion-textarea>
+    </ion-item>
+
     <ion-row>
       <ion-col>
         <ion-button type="submit" color="danger" expand="block">Crea partita</ion-button>

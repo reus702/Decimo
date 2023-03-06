@@ -7,7 +7,7 @@ import { PickerController } from '@ionic/angular';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  private number_player:number;
+  number_player:number;
 
   constructor(private pickerCtrl: PickerController) {
     this.number_player = 0;
@@ -30,14 +30,16 @@ export class Tab2Page {
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Annulla',
           role: 'cancel',
         },
         {
-          text: 'Confirm',
+          text: 'Conferma',
           handler: (value) => {
             window.alert(`You selected: ${value.number_player.value}`);
+            this.number_player =  value.number_player.value;
           },
+
         },
       ],
     });
