@@ -25,9 +25,21 @@
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
     "@ionic/angular": "^6.1.9",
+    "crypto": "^1.0.1",
     "ionicons": "^6.0.3",
+    "mysql-promise": "^5.0.0",
+    "mysql2": "^3.2.0",
+    "mysql2-promise": "^0.1.4",
+    "net": "^1.0.2",
     "rxjs": "~7.5.0",
+    "stream": "^0.0.2",
+    "timers": "^0.1.1",
     "tslib": "^2.3.0",
+    "url": "^0.11.0",
+    "util": "^0.12.5",
+    "vm": "^0.1.0",
+    "zlib": "^1.0.5",
+    "zlib-sync": "^0.1.8",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -61,6 +73,15 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "ts-node": "~8.3.0",
     "typescript": "~4.8.4"
+  },
+  "browser": {
+    "crypto": false,
+    "fs": false,
+    "path": false,
+    "os": false,
+    "tls": false,
+    "net": false,
+    "zlib": false
   },
   "description": "An Ionic project"
 }

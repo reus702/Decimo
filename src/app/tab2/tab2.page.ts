@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PickerController } from '@ionic/angular';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-tab2',
@@ -8,9 +9,16 @@ import { PickerController } from '@ionic/angular';
 })
 export class Tab2Page {
   number_player:number;
+  users: any[] = [];
 
-  constructor(private pickerCtrl: PickerController) {
+  constructor(private pickerCtrl: PickerController, private userService: UserService) {
     this.number_player = 0;
+  }
+
+  ionViewDidEnter() {
+    this.userService.getUsers().subscribe((data: any) => {
+      this.users = data;
+    });
   }
 
   async openPicker() {
@@ -45,6 +53,4 @@ export class Tab2Page {
 
     await picker.present();
   }
-  
-
 }
