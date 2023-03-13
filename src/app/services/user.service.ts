@@ -7,7 +7,6 @@ import { environment } from 'src/environments/environment';
 })
 export class UserService {
 
-  //private apiUrl = 'http://localhost/database/dbhandler.js';
   private apiUrl = environment.baseUrl+'/users';
 
   constructor(private http: HttpClient) { }
