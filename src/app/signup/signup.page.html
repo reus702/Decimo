@@ -10,27 +10,27 @@
   <form>
     <ion-item lines="full">
       <ion-label position="floating">Nome</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" required></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" required></ion-input>
+      <ion-input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" required></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" required></ion-input>
+      <ion-input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" required></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Conferma password</ion-label>
-      <ion-input type="password" required></ion-input>
+      <ion-input type="password" [(ngModel)]="confirmpwd" [ngModelOptions]="{standalone: true}" required></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Provincia</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" [(ngModel)]="provincia" [ngModelOptions]="{standalone: true}" required></ion-input>
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button type="submit" color="danger" expand="block">Sign Up</ion-button>
+        <ion-button (click)="signUpUser()" type="submit" color="danger" expand="block">Sign Up</ion-button>
       </ion-col>
     </ion-row>
   </form>

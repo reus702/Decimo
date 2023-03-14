@@ -31,6 +31,18 @@ app.get('/api/users', (req, res) => {
     });
 });
 
+app.get('/api/signup', (req, res) => {
+  connection.query('INSERT INTO `utenti`(`email`, `password`, `nome`, `provincia`) VALUES ("","","","","")', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      console.log('Utente registrato!');
+      res.json(results);
+    }
+  });
+});
+
 app.listen(3000, () => {
   console.log('API server listening on port 3000');
 });
