@@ -16,6 +16,19 @@ export class UserService {
     return this.http.get(this.apiUrl);
   }
 
+  logIn(){
+    this.apiUrl = environment.baseUrl + '/login';
+    
+   this.http.get(this.apiUrl).subscribe((result: any) => {
+    if (!result || Object.keys(result).length == 0) {
+      console.log("UTENTE NON PRESENTE NEL SISTEMA");
+    } else {
+      console.log(result);
+    }
+  });
+    return this.http.get(this.apiUrl);
+  }
+
   getUsers() {
     this.apiUrl = environment.baseUrl+'/users';
     return this.http.get(this.apiUrl);

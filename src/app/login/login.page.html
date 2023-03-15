@@ -18,7 +18,7 @@
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button [routerLink]="['/tabs']" type="submit" color="danger" expand="block">Sign In</ion-button>
+        <ion-button (click)="logInUser()" [routerLink]="['/tabs']" type="submit" color="danger" expand="block">Sign In</ion-button>
         <h6>Non sei ancora iscritto? <a [routerLink]="['/signup']" class="small-text">Registrati qui.</a></h6>
         
       </ion-col>

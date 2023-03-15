@@ -43,6 +43,18 @@ app.get('/api/signup', (req, res) => {
   });
 });
 
+app.get('/api/login', (req, res) => {
+  connection.query('SELECT nome FROM utenti WHERE `password` = "" AND `email` = "" ', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      console.log('Utente verificato!');
+      res.json(results);
+    }
+  });
+});
+
 app.listen(3000, () => {
   console.log('API server listening on port 3000');
 });
