@@ -12,33 +12,34 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   signUpUser(userInfo: string[]) {
-    console.log("userinfo 0:"+userInfo[0]);
     const body = {
       nome: userInfo[0],
       email: userInfo[1],
       password: userInfo[2],
       provincia: userInfo[3]
     }
-    console.log("userinfo 0:"+userInfo[0]);
     
     this.apiUrl = environment.baseUrl+'/signup';
-    this.http.post(this.apiUrl,body).subscribe((data:any) => {
-      console.log(data);
+    this.http.post(this.apiUrl,body).subscribe((result:any) => {
+      console.log(result);
     });
     //return this.http.get(this.apiUrl);
   }
 
-  logIn(){
-    this.apiUrl = environment.baseUrl + '/login';
-    
-   this.http.get(this.apiUrl).subscribe((result: any) => {
-    if (!result || Object.keys(result).length == 0) {
-      console.log("UTENTE NON PRESENTE NEL SISTEMA");
-    } else {
-      console.log(result);
+  logIn(userInfo: string[]){
+    const body = {
+      email: userInfo[0],
+      password: userInfo[1],
     }
-  });
-    return this.http.get(this.apiUrl);
+
+    this.apiUrl = environment.baseUrl + '/login';
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      if (!result || Object.keys(result).length == 0) {
+        console.log("UTENTE NON PRESENTE NEL SISTEMA");
+      } else {
+        console.log(result);
+      }
+    });
   }
 
   getUsers() {

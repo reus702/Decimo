@@ -21,10 +21,8 @@ export class LoginPage implements OnInit {
   }
 
   logInUser() {
-    console.log(this.email);
-    this.userService.logIn().subscribe((data: any) => {
-      this.logInUsers = data;
-    });
+    let userInfo: string[] = [this.email,this.password];
+    this.userService.logIn(userInfo);
   }
 
 }

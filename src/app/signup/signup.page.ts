@@ -26,12 +26,8 @@ export class SignupPage implements OnInit {
   }
 
   signUpUser() {
-    console.log(this.nome);
     let userInfo: string[] = [this.nome,this.email,this.password,this.provincia];
     this.userService.signUpUser(userInfo);
-    //this.userService.signUpUser(userInfo).subscribe((data: any) => {
-    //  this.signedUpUser = data;
-    //});
   }
 
 }

@@ -47,8 +47,8 @@ app.post('/api/signup', (req, res) => {
   });
 });
 
-app.get('/api/login', (req, res) => {
-  connection.query('SELECT nome FROM utenti WHERE `password` = "" AND `email` = "" ', (error, results) => {
+app.post('/api/login', (req, res) => {
+  connection.query('SELECT * FROM utenti WHERE `email` = "'+req.body.email+'" AND `password` = "'+req.body.password+'" ', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
