@@ -1,7 +1,11 @@
 const express = require('express');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
+const { userInfo } = require('os');
 
 const app = express();
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -31,8 +35,8 @@ app.get('/api/users', (req, res) => {
     });
 });
 
-app.get('/api/signup', (req, res) => {
-  connection.query('INSERT INTO `utenti`(`email`, `password`, `nome`, `provincia`) VALUES ("","","","","")', (error, results) => {
+app.post('/api/signup', (req, res) => {
+  connection.query('INSERT INTO `utenti`(`nome`, `email`, `password`, `provincia`) VALUES ("'+req.body.nome+'","'+req.body.email+'","'+req.body.password+'","'+req.body.provincia+'")', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');

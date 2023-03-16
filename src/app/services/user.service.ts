@@ -11,9 +11,21 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  signUpUser() {
+  signUpUser(userInfo: string[]) {
+    console.log("userinfo 0:"+userInfo[0]);
+    const body = {
+      nome: userInfo[0],
+      email: userInfo[1],
+      password: userInfo[2],
+      provincia: userInfo[3]
+    }
+    console.log("userinfo 0:"+userInfo[0]);
+    
     this.apiUrl = environment.baseUrl+'/signup';
-    return this.http.get(this.apiUrl);
+    this.http.post(this.apiUrl,body).subscribe((data:any) => {
+      console.log(data);
+    });
+    //return this.http.get(this.apiUrl);
   }
 
   logIn(){
@@ -30,7 +42,7 @@ export class UserService {
   }
 
   getUsers() {
-    this.apiUrl = environment.baseUrl+'/users';
+    //this.apiUrl = environment.baseUrl+'/users';
     return this.http.get(this.apiUrl);
   }
 }
