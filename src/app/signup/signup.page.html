@@ -30,7 +30,7 @@
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button (click)="signUpUser()" type="submit" color="danger" expand="block">Sign Up</ion-button>
+        <ion-button (click)="signUpUser()" [routerLink]="['/login']" type="submit" color="danger" expand="block">Sign Up</ion-button>
       </ion-col>
     </ion-row>
   </form>
