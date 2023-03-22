@@ -18,8 +18,7 @@
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button (click)="handleButtonClick()" type="submit" color="danger" expand="block">
-          {{ isUserLoggedIn() ? 'premere per continuare' : 'Sign In' }}
+        <ion-button (click)="logInUser()" type="submit" color="danger" expand="block">Accedi
         </ion-button>
         <h6>Non sei ancora iscritto? <a [routerLink]="['/signup']" class="small-text">Registrati qui.</a></h6>
         

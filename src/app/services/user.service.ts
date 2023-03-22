@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +9,7 @@ export class UserService {
 
   private apiUrl = "";
   private isUserLog = false;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   signUpUser(userInfo: string[]) {
     const body = {
@@ -39,6 +39,7 @@ export class UserService {
         this.isUserLog = false;
       } else {
         console.log(result);
+        this.router.navigate(['/tabs']);
         this.isUserLog = true
       }
     });
