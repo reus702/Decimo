@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 export class UserService {
 
   private apiUrl = "";
-  private isUserLog = false;
   constructor(private http: HttpClient, private router: Router) { }
 
   signUpUser(userInfo: string[]) {
@@ -36,18 +35,11 @@ export class UserService {
     this.http.post(this.apiUrl,body).subscribe((result: any) => {
       if (!result || Object.keys(result).length == 0) {
         console.log("UTENTE NON PRESENTE NEL SISTEMA");
-        this.isUserLog = false;
       } else {
         console.log(result);
         this.router.navigate(['/tabs']);
-        this.isUserLog = true
       }
     });
-  }
-
-  isUserLoggedIn()
-  {
-    return this.isUserLog;
   }
 
   getUsers() {
