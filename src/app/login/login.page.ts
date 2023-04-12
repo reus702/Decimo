@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -18,16 +21,21 @@ export class LoginPage implements OnInit {
     this.password = "";
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+  
 
   logInUser(form: NgForm) {
     const email = form.value.email;
     const password = form.value.password;
-    console.log("Prima del passaggio al service: "+email+password);
+    localStorage.setItem('session', form.value.email);
+    
     let userInfo: string[] = [email,password];
     this.userService.logIn(userInfo);
     form.reset();
+  }
+
+  getUserData(){
+    return localStorage.getItem("session") || "";
   }
 
 }

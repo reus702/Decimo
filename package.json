@@ -25,6 +25,7 @@
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
     "@ionic/angular": "^6.1.9",
+    "bcrypt": "^5.1.0",
     "crypto": "^1.0.1",
     "ionicons": "^6.0.3",
     "mysql-promise": "^5.0.0",

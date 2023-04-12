@@ -30,13 +30,16 @@ export class UserService {
       email: userInfo[0],
       password: userInfo[1],
     }
-
+ 
     this.apiUrl = environment.baseUrl + '/login';
     this.http.post(this.apiUrl,body).subscribe((result: any) => {
       if (!result || Object.keys(result).length == 0) {
         console.log("UTENTE NON PRESENTE NEL SISTEMA");
       } else {
-        console.log(result);
+        console.log(result[0].email);
+        let email1:any;
+        email1 = result[0].email;
+        console.log("aaaa: "+email1);
         this.router.navigate(['/tabs']);
       }
     });
