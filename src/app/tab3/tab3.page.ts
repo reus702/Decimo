@@ -13,8 +13,19 @@ export class Tab3Page {
 
   ngOnInit(){}
 
-  getUserData(){
-    return this.loginPage.getUserData();
+  getEmail(){
+    return JSON.parse(localStorage.getItem("session") || "").email;   
   }
 
+  getNome(){
+    return JSON.parse(localStorage.getItem("session") || "").nome;   
+  }
+
+  getProvincia(){
+    return JSON.parse(localStorage.getItem("session") || "").provincia;   
+  }
+
+  getBio(){
+    return JSON.parse(localStorage.getItem("session") || "").bio;   
+  }
 }

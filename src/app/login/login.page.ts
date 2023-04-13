@@ -23,11 +23,10 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {}
   
-
   logInUser(form: NgForm) {
     const email = form.value.email;
     const password = form.value.password;
-    localStorage.setItem('session', form.value.email);
+    //localStorage.setItem('session', form.value.email);
     
     let userInfo: string[] = [email,password];
     this.userService.logIn(userInfo);
@@ -35,7 +34,8 @@ export class LoginPage implements OnInit {
   }
 
   getUserData(){
-    return localStorage.getItem("session") || "";
+    let userData = localStorage.getItem("session") || "";
+    return userData[0];
   }
 
 }
