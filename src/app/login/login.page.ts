@@ -21,7 +21,9 @@ export class LoginPage implements OnInit {
     this.password = "";
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    history.pushState(null, '');
+  }
   
   logInUser(form: NgForm) {
     const email = form.value.email;

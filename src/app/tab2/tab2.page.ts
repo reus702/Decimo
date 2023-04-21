@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PickerController } from '@ionic/angular';
 import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -11,8 +12,14 @@ export class Tab2Page {
   number_player:number;
   users: any[] = [];
 
-  constructor(private pickerCtrl: PickerController, private userService: UserService) {
+  constructor(private pickerCtrl: PickerController, private userService: UserService,private router: Router) {
     this.number_player = 0;
+  }
+
+  ngOnInit(){
+    if(localStorage.getItem("session")?.length == 0){
+      this.router.navigate(['/login']); 
+    }
   }
 
   ionViewDidEnter() {

@@ -22,7 +22,6 @@ connection.connect((error) => {
   }
 });
 
-//????
 app.get('/api/users', (req, res) => {
     connection.query('INSERT INTO `utenti`(`email`, `password`, `nome`, `bio`, `provincia`) VALUES ("emai@ciao","passworde","diego","tortelliniallapaulodybbala","RM")', (error, results) => {
       if (error) {

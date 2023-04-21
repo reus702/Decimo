@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoginPage } from '../login/login.page';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab3',
@@ -7,25 +8,48 @@ import { LoginPage } from '../login/login.page';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
+  
 
-  constructor(private loginPage: LoginPage) {
+  constructor(private loginPage: LoginPage,private router: Router) {
   }
 
-  ngOnInit(){}
+  ngOnInit(){
+    if(localStorage.length == 0){
+      this.router.navigate(['/login']);
+    }
+  }
+
+  isUserLoggedIn(){
+    if(localStorage.length != 0) return true;
+    else return false;
+  }
 
   getEmail(){
-    return JSON.parse(localStorage.getItem("session") || "").email;   
+    if(localStorage.length != 0){
+      return JSON.parse(localStorage.getItem("session") || "").email;   
+    }else return "";
   }
 
   getNome(){
-    return JSON.parse(localStorage.getItem("session") || "").nome;   
+    if(localStorage.length != 0){
+      return JSON.parse(localStorage.getItem("session") || "").nome;   
+    }else return "";
   }
 
   getProvincia(){
-    return JSON.parse(localStorage.getItem("session") || "").provincia;   
+    if(localStorage.length != 0){
+      return JSON.parse(localStorage.getItem("session") || "").provincia;   
+    }else return "";
   }
 
   getBio(){
-    return JSON.parse(localStorage.getItem("session") || "").bio;   
+    if(localStorage.length != 0){
+      return JSON.parse(localStorage.getItem("session") || "").bio;   
+    }else return "";
+  }
+
+  logout(){
+    localStorage.removeItem("session");
+    this.router.navigate(['/login']);
   }
 }
