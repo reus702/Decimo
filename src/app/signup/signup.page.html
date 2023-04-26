@@ -7,31 +7,41 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form>
+  <form [formGroup]="signupForm" (ngSubmit)="signUpUser()" >
     <ion-item lines="full">
       <ion-label position="floating">Nome</ion-label>
-      <ion-input type="text" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" required></ion-input>
+      <ion-input type="text" name="nomeUtente" formControlName="nome" ></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" required></ion-input>
+      <ion-input type="email" name="email" formControlName="email"></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" required></ion-input>
+      <ion-input type="password" name="password" formControlName="password"></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Conferma password</ion-label>
-      <ion-input type="password" [(ngModel)]="confirmpwd" [ngModelOptions]="{standalone: true}" required></ion-input>
+      <ion-input type="password" name="confirmpwd" formControlName="confirmpwd"></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Provincia</ion-label>
-      <ion-input type="text" [(ngModel)]="provincia" [ngModelOptions]="{standalone: true}" required></ion-input>
+      <ion-input type="text" name="provincia" formControlName="provincia"></ion-input>
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button (click)="signUpUser()" [routerLink]="['/login']" type="submit" color="danger" expand="block">Sign Up</ion-button>
+        <ion-button [disabled]="signupForm.invalid" [routerLink]="['/login']" type="submit" color="danger" expand="block">Sign Up</ion-button>
+        <ion-label style="color: red" *ngIf="nomeFormControl && nomeFormControl.invalid && nomeFormControl.touched" >Input del nome non valido</ion-label>
+        <br>
+        <ion-label style="color: red"  *ngIf="emailFormControl && emailFormControl.invalid && emailFormControl.touched" >Email non valida</ion-label>
+        <br>
+        <ion-label style="color: red"  *ngIf="passwordFormControl && passwordFormControl.invalid && passwordFormControl.touched" >La password deve essere lunga lameno 8 caratteri</ion-label>
+        <br>
+        <ion-label style="color: red"  *ngIf="provinciaFormControl && provinciaFormControl.invalid && provinciaFormControl.touched" >La provincia deve essere lunga 2 caratteri (A-Z)</ion-label>
+        <br>
+        <ion-label style="color: red"  *ngIf="signupForm.errors?.['passwordMismatchError']" >Le password non coincidono</ion-label>
       </ion-col>
     </ion-row>
+    
   </form>
 </ion-content>
