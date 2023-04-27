@@ -84,7 +84,7 @@ app.post('/api/getprov', (req,res) => {
 });
 
 app.post('/api/campiPerProvincia', (req, res) => {
-  connection.query('SELECT * FROM partite WHERE `provincia` = "'+req.provincia+'" AND  `orario` >= GETDATE()', (error, results) => {
+  connection.query('SELECT p.* FROM partite as p INNER JOIN campi as c ON c.id = p.campo WHERE c.provincia = '+req+' AND p.orario >= CURRENT_TIMESTAMP', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
