@@ -14,10 +14,14 @@ export class Tab2Page {
   number_player:number;
   users: any[] = [];
   listaProvince: any[] =[];
+  listaCampi: any[] = [];
+  provinciaCorrente: string;
 
   constructor(private pickerCtrl: PickerController, private userService: UserService,private router: Router,public datepipe: DatePipe) {
     this.number_player = 0;
     this.listaProvince = this.getProvince();
+    //this.listaCampi = this.getCampiProvincia();
+    this.provinciaCorrente = "";
   }
 
   ngOnInit(){
@@ -82,5 +86,14 @@ export class Tab2Page {
 
   getProvince(){
     return this.userService.getProvince();
+  }
+
+  getCampiProvincia(){
+    //return this.userService.getCampiProvincia(this.getCampiProvincia);
+  }
+
+  handleChange(value: string) {
+    this.provinciaCorrente = value;
+    console.log("provincia: "+this.provinciaCorrente);
   }
 }
