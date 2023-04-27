@@ -1,4 +1,4 @@
-export class Campo {
+export class Partita {
     personeMancanti:number;
     descrizione: string;    
     provincia: string;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Campo } from '../services/campo';
+import { Partita } from '../services/partita';
 import { User } from '../services/user';
 import { UserService } from '../services/user.service';
 
@@ -10,10 +10,10 @@ import { UserService } from '../services/user.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-   campo: Campo[] | undefined;
+   campo: Partita[] | undefined;
 
   constructor(private router: Router,private userService: UserService) {
-    var campo:Campo[];
+    var campo:Partita[];
   }
 
   ngOnInit(){
@@ -24,7 +24,7 @@ export class Tab1Page {
 
       var campi = localStorage.getItem("campiUtente") ;
       
-      this.campo = campi as unknown as Campo[];
+      this.campo = campi as unknown as Partita[];
 
       // MANCA I DIV PER OGNI CAMPO 
     }
