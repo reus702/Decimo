@@ -52,4 +52,32 @@ export class UserService {
     //this.apiUrl = environment.baseUrl+'/users';
     return this.http.get(this.apiUrl);
   }
+ 
+  newGame(gameInfo: string[]) {
+    const body = {
+      giocatoriRimanenti: gameInfo[0],
+      dataPartita: gameInfo[1],
+      infoPartita: gameInfo[2],
+      emailUser: gameInfo[3]
+    }
+    
+    this.apiUrl = environment.baseUrl+'/newgame';
+
+    this.http.post(this.apiUrl,body).subscribe((result:any) => {
+      console.log(result);
+    });
+    //return this.http.get(this.apiUrl);
+  }
+
+  getProvince() {
+    this.apiUrl = environment.baseUrl+'/getprov';
+    let provList:string[] = [];
+
+    this.http.post(this.apiUrl,"").subscribe((result:any) => {
+      for(let i = 0; i < result.length; i ++){
+        provList[i] = JSON.parse(JSON.stringify(result[i].provincia));
+      }      
+    });
+    return provList;
+  }
 }

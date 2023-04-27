@@ -58,6 +58,31 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+app.post('/api/newgame', (req, res) => {
+  connection.query('INSERT INTO `partite`(`organizzatore`, `persone_mancanti`, `descrizione`, `orario`) VALUES ("'+req.body.emailUser+'",'+req.body.giocatoriRimanenti+',"'+req.body.infoPartita+'","'+req.body.dataPartita+'")', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      console.log('Partita registrata!');
+      res.json(results);
+    }
+  });
+});
+
+app.post('/api/getprov', (req,res) => {
+  console.log("Sono prima della query prov");
+  connection.query('SELECT provincia FROM provReg ORDER BY provincia', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      console.log("Province trovate")
+      res.json(results);
+    }
+  });
+});
+
 app.listen(3000, () => {
   console.log('API server listening on port 3000');
 });
