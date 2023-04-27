@@ -34,16 +34,24 @@
       <ion-textarea type="text" ngModel name="infoPartita" required></ion-textarea>
     </ion-item>
 
-    <ion-list>
-      <ion-item>
-        <ion-select placeholder="Provincia" aria-label="Seleziona provincia">
-          <ion-select-option *ngFor="let index of listaProvince">{{index}}</ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
+    <ion-row>
+      <ion-list>
+        <ion-item>
+          <ion-select placeholder="Provincia" label="Seleziona provincia" #prov (ionChange)="handleChange(prov.value)" okText="Conferma" cancelText="Annulla">
+            <ion-select-option *ngFor="let prov of listaProvince" [value]="prov">{{prov}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-select placeholder="Campo da gioco" label="Seleziona campo" okText="Conferma" cancelText="Annulla">
+            <ion-select-option *ngFor="let campo of listaCampi">{{campo}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </ion-row>
     
-
-
     <ion-row>
       <ion-col>
         <ion-button [disabled]="!newMatchForm.valid" (click)="ionViewDidEnter()" type="submit" color="danger" expand="block">Crea partita</ion-button>
