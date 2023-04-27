@@ -58,6 +58,18 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+app.post('/api/campiPerProvincia', (req, res) => {
+  connection.query('SELECT * FROM utenti WHERE `partite` = "'+req.provincia+'" ', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
 app.listen(3000, () => {
   console.log('API server listening on port 3000');
 });

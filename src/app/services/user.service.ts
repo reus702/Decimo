@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { User } from './user';
+import { Campo } from './campo';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,23 @@ export class UserService {
     //return this.http.get(this.apiUrl);
   }
 
+  richiestaCampi(provincia: string)
+  {
+    let campi:Campo[];
+    this.apiUrl = environment.baseUrl + '/campiPerProvincia';
+
+    this.http.post(this.apiUrl,provincia).subscribe((result: any) => {
+      if (!result || Object.keys(result).length == 0) {
+        console.log("NESSUN CAMPO DISPONIBILE CON QUESTA PROVINCIA");
+      } else {
+        for(let i = 0 ; i<Object.keys(result).length ;i++)
+        {
+          campi[i] = new Campo(result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti); //creo oggetto utente
+        }
+        localStorage.setItem("campiUtente",JSON.stringify(campi)); //carico informazioni utente su localStorage
+      }
+    });
+  }
   logIn(userInfo: string[]){
     const body = {
       email: userInfo[0],
