@@ -22,7 +22,6 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    history.pushState(null, '');
   }
   
   logInUser(form: NgForm) {

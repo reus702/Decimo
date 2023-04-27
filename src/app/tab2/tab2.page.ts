@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { PickerController } from '@ionic/angular';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-tab2',
@@ -11,9 +13,11 @@ import { Router } from '@angular/router';
 export class Tab2Page {
   number_player:number;
   users: any[] = [];
+  listaProvince: any[] =[];
 
-  constructor(private pickerCtrl: PickerController, private userService: UserService,private router: Router) {
+  constructor(private pickerCtrl: PickerController, private userService: UserService,private router: Router,public datepipe: DatePipe) {
     this.number_player = 0;
+    this.listaProvince = this.getProvince();
   }
 
   ngOnInit(){
@@ -59,5 +63,24 @@ export class Tab2Page {
     });
 
     await picker.present();
+  }
+
+  newGame(form: NgForm) {
+    const giocatoriRimanenti = this.number_player;
+    //const dataPartita = form.value.dataPartita;
+    let dataPartita = form.value.dataPartita;
+    dataPartita = this.datepipe.transform(dataPartita, 'yyyy-MM-dd HH:mm:ss');
+
+    const infoPartita = form.value.infoPartita;
+    const emailUser = JSON.parse(localStorage.getItem("session") || "").email;
+  
+    let gameInfo: string[] = [giocatoriRimanenti,dataPartita,infoPartita,emailUser];
+    
+    this.userService.newGame(gameInfo);
+    form.reset();
+  }
+
+  getProvince(){
+    return this.userService.getProvince();
   }
 }

@@ -8,11 +8,6 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
- nomeUtente:string;
-  email:string;
-  password:string;
-  confirmpwd:string;
-  provincia:string;
   signedUpUser: any[] = [];
 
  //validatori input del form registrazione
@@ -30,18 +25,13 @@ export class SignupPage implements OnInit {
   get provinciaFormControl(){return this.signupForm.get('provincia')}
 
   constructor(private userService: UserService) { 
-    this.nomeUtente = "";
-    this.email = "";
-    this.password = "";
-    this.confirmpwd = "";
-    this.provincia = "";
   }
 
   ngOnInit() {
   }
 
   signUpUser() {
-    let userInfo: string[] = [this.nomeUtente,this.email,this.password,this.provincia];
+    let userInfo: any[] = [this.signupForm.controls['nome'].value ,this.signupForm.controls['email'].value,this.signupForm.controls['password'].value,this.signupForm.controls['provincia'].value];
     this.userService.signUpUser(userInfo);
   }
 

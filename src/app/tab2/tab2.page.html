@@ -13,10 +13,10 @@
     </ion-toolbar>
   </ion-header>
 
-  <form>
+  <form #newMatchForm="ngForm" (ngSubmit)="newGame(newMatchForm)">
     <ion-item lines="full">
       <ion-label>Giocatori mancanti</ion-label>
-      <ion-button (click)="openPicker()">Numero giocatori mancanti: {{number_player}}</ion-button>
+      <ion-button (click)="openPicker()">Seleziona: {{number_player}}</ion-button>
     </ion-item>
     
     <ion-item>
@@ -24,19 +24,29 @@
       <ion-datetime-button datetime="datetime"></ion-datetime-button>
       <ion-popover [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime id="datetime"></ion-datetime>
+          <ion-datetime id="datetime" ngModel name="dataPartita"></ion-datetime>
         </ng-template>
       </ion-popover>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Informazioni aggiuntive</ion-label>
-      <ion-textarea type="text" required></ion-textarea>
+      <ion-textarea type="text" ngModel name="infoPartita" required></ion-textarea>
     </ion-item>
+
+    <ion-list>
+      <ion-item>
+        <ion-select placeholder="Provincia" aria-label="Seleziona provincia">
+          <ion-select-option *ngFor="let index of listaProvince">{{index}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    
+
 
     <ion-row>
       <ion-col>
-        <ion-button (click)="ionViewDidEnter()" type="submit" color="danger" expand="block">Crea partita</ion-button>
+        <ion-button [disabled]="!newMatchForm.valid" (click)="ionViewDidEnter()" type="submit" color="danger" expand="block">Crea partita</ion-button>
       </ion-col>
     </ion-row>
   </form>
