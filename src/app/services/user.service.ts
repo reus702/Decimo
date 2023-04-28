@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { User } from './user';
-import { Campo } from './campo';
+import { Partita } from './partita';
+import { Console } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -29,23 +30,59 @@ export class UserService {
     //return this.http.get(this.apiUrl);
   }
 
-  richiestaCampi(provincia: string)
+  richiestaCampi(provincia: string):Partita[]
   {
-    let campi:Campo[];
+    const body = {provincia: provincia};
+    let campi:Partita[]=[];
     this.apiUrl = environment.baseUrl + '/campiPerProvincia';
 
-    this.http.post(this.apiUrl,provincia).subscribe((result: any) => {
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
       if (!result || Object.keys(result).length == 0) {
-        console.log("NESSUN CAMPO DISPONIBILE CON QUESTA PROVINCIA");
+        console.log("NESSUNA PARTITA DISPONIBILE CON QUESTA PROVINCIA");
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++)
         {
-          campi[i] = new Campo(result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti); //creo oggetto utente
+          campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti); //creo oggetto utente
         }
-        localStorage.setItem("campiUtente",JSON.stringify(campi)); //carico informazioni utente su localStorage
       }
     });
+    return campi;
   }
+
+  listaCampiPerProvincia(provincia: string) {  //metodo per estrarre campi appartenenti ad una provincia per la combo box
+    //let campi:Campo[] = [];
+    let campi:string[] = [];
+    this.apiUrl = environment.baseUrl + '/campiProvincia';
+    const body = {
+      provincia: provincia,
+    }
+
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      if (!result || Object.keys(result).length == 0) {
+        console.log("NESSUN CAMPO DISPONIBILE CON QUESTA PROVINCIA");
+      } else {
+        for(let i = 0 ; i<Object.keys(result).length ;i++) {
+          //campi[i] = new Campo(result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti); //creo oggetto utente
+          //campi[i] = new Campo(JSON.parse(JSON.stringify(result[i].descrizione)), provincia,JSON.parse(JSON.stringify(result[i].tipoCampo)));
+          campi[i] = JSON.parse(JSON.stringify(result[i].descrizione));
+        }
+      }
+    });
+    return campi;
+  }
+
+  getProvince() {
+    this.apiUrl = environment.baseUrl+'/getprov';
+    let provList:string[] = [];
+
+    this.http.post(this.apiUrl,"").subscribe((result:any) => {
+      for(let i = 0; i < result.length; i ++){
+        provList[i] = JSON.parse(JSON.stringify(result[i].provincia));
+      }      
+    });
+    return provList;
+  }
+
   logIn(userInfo: string[]){
     const body = {
       email: userInfo[0],
@@ -73,10 +110,11 @@ export class UserService {
  
   newGame(gameInfo: string[]) {
     const body = {
-      giocatoriRimanenti: gameInfo[0],
-      dataPartita: gameInfo[1],
-      infoPartita: gameInfo[2],
-      emailUser: gameInfo[3]
+      emailUser: gameInfo[0],
+      giocatoriRimanenti: gameInfo[1],
+      campo: gameInfo[2],
+      infoPartita: gameInfo[3],
+      dataPartita: gameInfo[4]
     }
     
     this.apiUrl = environment.baseUrl+'/newgame';
@@ -84,21 +122,6 @@ export class UserService {
     this.http.post(this.apiUrl,body).subscribe((result:any) => {
       console.log(result);
     });
-    //return this.http.get(this.apiUrl);
   }
-
-  getProvince() {
-    this.apiUrl = environment.baseUrl+'/getprov';
-    let provList:string[] = [];
-
-    this.http.post(this.apiUrl,"").subscribe((result:any) => {
-      for(let i = 0; i < result.length; i ++){
-        provList[i] = JSON.parse(JSON.stringify(result[i].provincia));
-      }      
-    });
-    return provList;
-  }
-
-  
 
 }

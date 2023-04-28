@@ -23,6 +23,9 @@ connection.connect((error) => {
   }
 });
 
+/*
+/ Questo metodo registra un utente all'applicazione
+*/
 app.post('/api/signup', (req, res) => {
   bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(req.body.password, salt, function(err, hash) {
@@ -40,6 +43,9 @@ app.post('/api/signup', (req, res) => {
   
 });
 
+/*
+/ Questo metodo verifica dati di login di un utente
+*/
 app.post('/api/login', (req, res) => {
   connection.query('SELECT * FROM utenti WHERE `email` = "'+req.body.email+'"', (error, results) => {
     if (error) {
@@ -58,8 +64,11 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+/*
+/ Questo metodo salva la nuova partita nel db
+*/
 app.post('/api/newgame', (req, res) => {
-  connection.query('INSERT INTO `partite`(`organizzatore`, `persone_mancanti`, `descrizione`, `orario`) VALUES ("'+req.body.emailUser+'",'+req.body.giocatoriRimanenti+',"'+req.body.infoPartita+'","'+req.body.dataPartita+'")', (error, results) => {
+  connection.query('INSERT INTO `partite`(`organizzatore`, `persone_mancanti`,  `campo`, `descrizione`, `orario`) VALUES ("'+req.body.emailUser+'",'+req.body.giocatoriRimanenti+', "'+req.body.campo+'", "'+req.body.infoPartita+'","'+req.body.dataPartita+'")', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
@@ -70,8 +79,10 @@ app.post('/api/newgame', (req, res) => {
   });
 });
 
+/*
+/ Questo metodo restituisce la lista completa delle province per combo box
+*/
 app.post('/api/getprov', (req,res) => {
-  console.log("Sono prima della query prov");
   connection.query('SELECT provincia FROM provReg ORDER BY provincia', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
@@ -84,7 +95,20 @@ app.post('/api/getprov', (req,res) => {
 });
 
 app.post('/api/campiPerProvincia', (req, res) => {
-  connection.query('SELECT * FROM utenti WHERE `partite` = "'+req.provincia+'" ', (error, results) => {
+
+  connection.query('SELECT p.* FROM partite as p INNER JOIN campi as c ON c.descrizione = p.campo WHERE c.provincia = "'+req.body.provincia+'" AND p.orario >= CURRENT_TIMESTAMP', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
+
+app.post('/api/campiProvincia', (req, res) => {
+  connection.query('SELECT `descrizione` FROM `campi` WHERE `provincia`="'+req.body.provincia+'";', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
@@ -93,7 +117,6 @@ app.post('/api/campiPerProvincia', (req, res) => {
     }
   });
 });
-
 
 app.listen(3000, () => {
   console.log('API server listening on port 3000');

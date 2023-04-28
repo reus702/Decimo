@@ -37,7 +37,7 @@
     <ion-row>
       <ion-list>
         <ion-item>
-          <ion-select placeholder="Provincia" label="Seleziona provincia" #prov (ionChange)="handleChange(prov.value)" okText="Conferma" cancelText="Annulla">
+          <ion-select placeholder="Provincia" label="Seleziona provincia" #prov (ionChange)="handleChangeProvincia(prov.value)" okText="Conferma" cancelText="Annulla">
             <ion-select-option *ngFor="let prov of listaProvince" [value]="prov">{{prov}}</ion-select-option>
           </ion-select>
         </ion-item>
@@ -45,7 +45,7 @@
 
       <ion-list>
         <ion-item>
-          <ion-select placeholder="Campo da gioco" label="Seleziona campo" okText="Conferma" cancelText="Annulla">
+          <ion-select placeholder="Campo da gioco" label="Seleziona campo" #campo (ionChange)="handleChangeCampo(campo.value)" okText="Conferma" cancelText="Annulla">
             <ion-select-option *ngFor="let campo of listaCampi">{{campo}}</ion-select-option>
           </ion-select>
         </ion-item>

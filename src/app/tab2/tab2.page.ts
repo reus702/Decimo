@@ -16,12 +16,14 @@ export class Tab2Page {
   listaProvince: any[] =[];
   listaCampi: any[] = [];
   provinciaCorrente: string;
+  campoCorrente: string;
 
   constructor(private pickerCtrl: PickerController, private userService: UserService,private router: Router,public datepipe: DatePipe) {
     this.number_player = 0;
     this.listaProvince = this.getProvince();
-    //this.listaCampi = this.getCampiProvincia();
+    this.listaCampi = [];
     this.provinciaCorrente = "";
+    this.campoCorrente = "";
   }
 
   ngOnInit(){
@@ -67,14 +69,12 @@ export class Tab2Page {
 
   newGame(form: NgForm) {
     const giocatoriRimanenti = this.number_player;
-    //const dataPartita = form.value.dataPartita;
+    const infoPartita = form.value.infoPartita;
+    const emailUser = JSON.parse(localStorage.getItem("session") || "").email;
     let dataPartita = form.value.dataPartita;
     dataPartita = this.datepipe.transform(dataPartita, 'yyyy-MM-dd HH:mm:ss');
 
-    const infoPartita = form.value.infoPartita;
-    const emailUser = JSON.parse(localStorage.getItem("session") || "").email;
-  
-    let gameInfo: string[] = [giocatoriRimanenti,dataPartita,infoPartita,emailUser];
+    let gameInfo: string[] = [emailUser,giocatoriRimanenti,this.campoCorrente,infoPartita,dataPartita];
     
     this.userService.newGame(gameInfo);
     form.reset();
@@ -85,11 +85,16 @@ export class Tab2Page {
   }
 
   getCampiProvincia(){
-    //return this.userService.getCampiProvincia(this.getCampiProvincia);
+    this.listaCampi = this.userService.listaCampiPerProvincia(this.provinciaCorrente);
   }
 
-  handleChange(value: string) {
+  handleChangeProvincia(value: string) {
     this.provinciaCorrente = value;
+    this.getCampiProvincia();
+  }
+
+  handleChangeCampo(value: string) {
+    this.campoCorrente = value;
     console.log("provincia: "+this.provinciaCorrente);
   }
 }
