@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const { userInfo } = require('os');
+const bcrypt = require("bcrypt");
 
 const app = express();
 app.use(bodyParser.urlencoded({extended:true}));
@@ -22,38 +23,37 @@ connection.connect((error) => {
   }
 });
 
-app.get('/api/users', (req, res) => {
-    connection.query('INSERT INTO `utenti`(`email`, `password`, `nome`, `bio`, `provincia`) VALUES ("emai@ciao","passworde","diego","tortelliniallapaulodybbala","RM")', (error, results) => {
-      if (error) {
-        console.error('Error executing MySQL query', error);
-        res.status(500).send('Error executing MySQL query');
-      } else {
-        console.log('Query worka');
-        res.json(results);
-      }
-    });
-});
-
 app.post('/api/signup', (req, res) => {
-  connection.query('INSERT INTO `utenti`(`nome`, `email`, `password`, `provincia`) VALUES ("'+req.body.nome+'","'+req.body.email+'","'+req.body.password+'","'+req.body.provincia+'")', (error, results) => {
-    if (error) {
-      console.error('Error executing MySQL query', error);
-      res.status(500).send('Error executing MySQL query');
-    } else {
-      console.log('Utente registrato!');
-      res.json(results);
-    }
-  });
+  bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(req.body.password, salt, function(err, hash) {
+        connection.query('INSERT INTO `utenti`(`email`, `password`, `salt`, `nome`, `bio`, `provincia`) VALUES ("'+req.body.email+'","'+hash+'","'+salt+'","'+req.body.nome+'","","'+req.body.provincia+'")', (error, results) => {
+          if (error) {
+            console.error('Error executing MySQL query', error);
+            res.status(500).send('Error executing MySQL query');
+          } else {
+            console.log('Utente registrato!');
+            res.json(results);
+          }
+        });
+      });
+    })
+  
 });
 
 app.post('/api/login', (req, res) => {
-  connection.query('SELECT * FROM utenti WHERE `email` = "'+req.body.email+'" AND `password` = "'+req.body.password+'" ', (error, results) => {
+  connection.query('SELECT * FROM utenti WHERE `email` = "'+req.body.email+'"', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
-      console.log('Utente verificato!');
-      res.json(results);
+      bcrypt.hash(req.body.password, results[0].salt, function(err, hash) {
+        if(hash == results[0].password){
+          console.log('Utente verificato!');
+          res.json(results);
+        }else{
+          res.status(500).send('password errata');
+        }
+      });
     }
   });
 });

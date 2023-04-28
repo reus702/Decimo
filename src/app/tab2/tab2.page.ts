@@ -30,11 +30,7 @@ export class Tab2Page {
     }
   }
 
-  ionViewDidEnter() {
-    //this.userService.getUsers().subscribe((data: any) => {
-     // this.users = data;
-    //});
-  }
+ 
 
   async openPicker() {
     const options = [];
