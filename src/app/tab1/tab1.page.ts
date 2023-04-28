@@ -20,11 +20,8 @@ export class Tab1Page {
     if(localStorage.getItem("session")?.length == 0){
       this.router.navigate(['/login']);
     }else{
-      this.userService.richiestaCampi(JSON.parse(localStorage.getItem("session") || "").provincia);
-
-      var campi = localStorage.getItem("campiUtente") ;
       
-      this.campo = campi as unknown as Partita[];
+      this.campo = this.userService.richiestaCampi(JSON.parse(localStorage.getItem("session") || "").provincia);
 
       // MANCA I DIV PER OGNI CAMPO 
     }
@@ -32,8 +29,7 @@ export class Tab1Page {
 
   controlloLunghezza(): boolean
   {
-    console.log(localStorage.getItem("campiUtente")?.length);
-    if(localStorage.getItem("campiUtente") == undefined) return true
+    if(this.campo?.length == 0) return true
     else return false;
   }
 
