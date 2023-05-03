@@ -101,11 +101,26 @@ app.post('/api/campiPerProvincia', (req, res) => {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
+     // console.log(results);
+      res.json(results);
+    }
+  });
+});
+
+app.post('/api/ricercaPartite', (req, res) => {
+
+  console.log(req.body.ricerca);
+  connection.query('SELECT * FROM `partite` WHERE orario >= CURRENT_TIMESTAMP AND (`organizzatore` = "'+req.body.ricerca+'" OR `campo` = "'+req.body.ricerca+'"  OR `descrizione`  =  "'+req.body.ricerca+'") ', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
       console.log(results);
       res.json(results);
     }
   });
 });
+
 
 app.post('/api/campiProvincia', (req, res) => {
   connection.query('SELECT `descrizione` FROM `campi` WHERE `provincia`="'+req.body.provincia+'";', (error, results) => {

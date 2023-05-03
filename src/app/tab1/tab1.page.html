@@ -14,10 +14,13 @@
   </ion-header>
 
   <app-explore-container name="Home"></app-explore-container>
-
-  <ion-item>
-    <ion-searchbar placeholder="Cerca partita,provincia,utente..."></ion-searchbar>
-  </ion-item>
+  <form [formGroup]="ricerca" (ngSubmit)="ricercaCampi()" >
+    <ion-item lines="full">
+      <ion-label position="floating">Ricerca...</ion-label>
+      <ion-input type="text" name="cerca" formControlName="cerca" ></ion-input>
+      <ion-button type = "submit">CERCA</ion-button>
+    </ion-item>
+  </form>
   <ion-item *ngIf="controlloLunghezza()">
       Nessun campo salvato in questa provincia nel sistema
   </ion-item>

@@ -49,6 +49,26 @@ export class UserService {
     return campi;
   }
 
+  ricercaCampi(ricerca:String|null,provincia: string):Partita[]
+  {
+    const body = {ricerca: ricerca};
+    let campi:Partita[]=[];
+    this.apiUrl = environment.baseUrl + '/ricercaPartite';
+
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      if (!result || Object.keys(result).length == 0) {
+        console.log("NESSUNA PARTITA DISPONIBILE CON QUESTA RICERCA");
+      } else {
+        for(let i = 0 ; i<Object.keys(result).length ;i++)
+        {
+          console.log("ESTRAGGO PARTITE");
+          campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti); //creo oggetto 
+        }
+      }
+    });
+    return campi;
+  }
+
   listaCampiPerProvincia(provincia: string) {  //metodo per estrarre campi appartenenti ad una provincia per la combo box
     //let campi:Campo[] = [];
     let campi:string[] = [];
