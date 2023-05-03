@@ -3,12 +3,14 @@ export class Partita {
     descrizione: string;    
     provincia: string;
     tipo: string;
+    orario:Date;
 
-    constructor(descrizione:string,provincia:string,tipo:string,n:number) {
+    constructor(descrizione:string,provincia:string,tipo:string,n:number,or:Date) {
         this.descrizione = descrizione;
         this.provincia = provincia;
         this.tipo = tipo;
         this.personeMancanti = n;
+        this.orario = or;
     }
 
     toStringUserData(){

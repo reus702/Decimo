@@ -4,6 +4,7 @@ import { Partita } from '../services/partita';
 import { User } from '../services/user';
 import { UserService } from '../services/user.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-tab1',
@@ -16,7 +17,7 @@ export class Tab1Page {
   })
   campo: Partita[] | undefined;
 
-  constructor(private router: Router,private userService: UserService) {
+  constructor(private router: Router,private userService: UserService,public datepipe: DatePipe) {
     var campo:Partita[];
   }
 
@@ -39,8 +40,10 @@ export class Tab1Page {
     }
   }
 
-
-
+  getOrario(orario:Date)
+  {
+    return this.datepipe.transform(orario, 'dd-MM-yyyy HH:mm');
+  }
   controlloLunghezza(): boolean
   {
     if(this.campo?.length == 0) return true

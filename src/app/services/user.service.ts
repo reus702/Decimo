@@ -42,7 +42,7 @@ export class UserService {
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++)
         {
-          campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti); //creo oggetto utente
+          campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto utente
         }
       }
     });
@@ -62,7 +62,7 @@ export class UserService {
         for(let i = 0 ; i<Object.keys(result).length ;i++)
         {
           console.log("ESTRAGGO PARTITE");
-          campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti); //creo oggetto 
+          campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto 
         }
       }
     });
