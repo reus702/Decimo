@@ -9,14 +9,15 @@ import { UserService } from '../services/user.service';
 })
 export class SignupPage implements OnInit {
   signedUpUser: any[] = [];
-
+  listaProvince: any[] =[];
+  provinciaCorrente: string;
  //validatori input del form registrazione
  signupForm = new FormGroup({
   nome:new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9]+$')]),
   email:new FormControl('',[Validators.email, Validators.required]),
   password:new FormControl('',[Validators.required, Validators.minLength(8)]),
   confirmpwd: new FormControl('',[Validators.required]),
-  provincia:new FormControl('',[Validators.required, Validators.minLength(2), Validators.maxLength(2), Validators.pattern('[A-Z]+$')])
+ // provincia:new FormControl('',[Validators.required])
 }, [controlloPwd("password","confirmpwd")]);
 //getter vallidatori form registraizone
   get nomeFormControl(){return this.signupForm.get('nome')}
@@ -24,15 +25,25 @@ export class SignupPage implements OnInit {
   get passwordFormControl(){return this.signupForm.get('password')}
   get provinciaFormControl(){return this.signupForm.get('provincia')}
 
+  getProvince(){
+    return this.userService.getProvince();
+  }
   constructor(private userService: UserService) { 
+    this.listaProvince = this.getProvince();
+    this.provinciaCorrente = "";
   }
 
   ngOnInit() {
   }
 
   signUpUser() {
-    let userInfo: any[] = [this.signupForm.controls['nome'].value ,this.signupForm.controls['email'].value,this.signupForm.controls['password'].value,this.signupForm.controls['provincia'].value];
+    let userInfo: any[] = [this.signupForm.controls['nome'].value ,this.signupForm.controls['email'].value,this.signupForm.controls['password'].value,this.provinciaCorrente];
     this.userService.signUpUser(userInfo);
+  }
+
+  handleChange(value: string) {
+    this.provinciaCorrente = value;
+    console.log("provincia: "+this.provinciaCorrente);
   }
 
 }

@@ -26,7 +26,13 @@
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Provincia</ion-label>
-      <ion-input type="text" name="provincia" formControlName="provincia"></ion-input>
+      <ion-list >
+        <ion-item>
+          <ion-select placeholder="Provincia" label="Seleziona provincia" #prov (ionChange)="handleChange(prov.value)" okText="Conferma" cancelText="Annulla">
+            <ion-select-option *ngFor="let prov of listaProvince" [value]="prov">{{prov}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
     </ion-item>
     <ion-row>
       <ion-col>
