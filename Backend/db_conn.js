@@ -29,7 +29,7 @@ connection.connect((error) => {
 app.post('/api/signup', (req, res) => {
   bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(req.body.password, salt, function(err, hash) {
-        connection.query('INSERT INTO `utenti`(`email`, `password`, `salt`, `nome`, `bio`, `provincia`) VALUES ("'+req.body.email+'","'+hash+'","'+salt+'","'+req.body.nome+'","","'+req.body.provincia+'")', (error, results) => {
+        connection.query('INSERT INTO `utenti`(`email`, `password`, `salt`, `nome`, `bio`, `provincia`)  VALUES ("'+req.body.email+'","'+hash+'","'+salt+'","'+req.body.nome+'","","'+req.body.provincia+'")', (error, results) => {
           if (error) {
             console.error('Error executing MySQL query', error);
             res.status(500).send('Error executing MySQL query');
