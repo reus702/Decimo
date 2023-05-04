@@ -7,19 +7,18 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form #loginForm="ngForm" (ngSubmit)="logInUser(loginForm)">
+  <form [formGroup]="loginForm" (ngSubmit)="logIn()">
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" ngModel name="email"  required></ion-input>
+      <ion-input type="email" name="email" formControlName="email"></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" ngModel name="password"  required></ion-input>
+      <ion-input type="password" name="password" formControlName="password"></ion-input>
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button [disabled]="!loginForm.valid" type="submit" color="danger" expand="block">Accedi
-        </ion-button>
+        <ion-button [disabled]="!loginForm.valid" type="submit" color="danger" expand="block">Accedi</ion-button>
         <h6>Non sei ancora iscritto? <a [routerLink]="['/signup']" class="small-text">Registrati qui.</a></h6>
       </ion-col>
     </ion-row>

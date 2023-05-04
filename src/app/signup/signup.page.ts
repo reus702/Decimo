@@ -14,9 +14,9 @@ export class SignupPage implements OnInit {
  //validatori input del form registrazione
  signupForm = new FormGroup({
   nome:new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9]+$')]),
-  email:new FormControl('',[Validators.email, Validators.required]),
-  password:new FormControl('',[Validators.required, Validators.minLength(8)]),
-  confirmpwd: new FormControl('',[Validators.required]),
+  email:new FormControl('',[Validators.email, Validators.required,Validators.pattern('[a-zA-Z0-9]+$')]),
+  password:new FormControl('',[Validators.required, Validators.minLength(8),Validators.pattern('[a-zA-Z0-9]+$')]),
+  confirmpwd: new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9]+$')]),
  // provincia:new FormControl('',[Validators.required])
 }, [controlloPwd("password","confirmpwd")]);
 //getter vallidatori form registraizone

@@ -1,7 +1,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -12,26 +12,24 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  email:string;
-  password:string;
   logInUsers: any[] = [];
 
   constructor(private userService: UserService,private router: Router) {
-    this.email = "";
-    this.password = "";
   }
+
+  loginForm = new FormGroup({
+    email:new FormControl('',[Validators.email, Validators.required,Validators.pattern('[a-zA-Z0-9]+$')]),
+    password:new FormControl('',[Validators.required, Validators.minLength(8),Validators.pattern('[a-zA-Z0-9]+$')]),
+  })
 
   ngOnInit() {
   }
   
-  logInUser(form: NgForm) {
-    const email = form.value.email;
-    const password = form.value.password;
-    //localStorage.setItem('session', form.value.email);
-    
-    let userInfo: string[] = [email,password];
+  logIn() {
+    let email: any = this.loginForm.controls['email'].value
+    let password: any = this.loginForm.controls['password'].value;
+    let userInfo: string[] = [email, password];
     this.userService.logIn(userInfo);
-    form.reset();
   }
 
   getUserData(){

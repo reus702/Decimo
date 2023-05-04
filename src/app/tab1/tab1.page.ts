@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Partita } from '../services/partita';
-import { User } from '../services/user';
 import { UserService } from '../services/user.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common'
@@ -30,7 +29,6 @@ export class Tab1Page {
   }
 
   ricercaCampi(){
-    
     let cerca = this.ricerca.controls['cerca'].value;
     if(localStorage.getItem("session")?.length == 0){
       this.router.navigate(['/login']);

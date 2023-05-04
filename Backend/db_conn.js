@@ -101,7 +101,6 @@ app.post('/api/campiPerProvincia', (req, res) => {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
-     // console.log(results);
       res.json(results);
     }
   });
@@ -115,7 +114,6 @@ app.post('/api/ricercaPartite', (req, res) => {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
-      console.log(results);
       res.json(results);
     }
   });
