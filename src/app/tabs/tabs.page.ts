@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
 export class TabsPage {
 
   constructor() {}
-
+  isLoggedIn(){
+    return localStorage.getItem("session") ? true : false;
+  }
 }

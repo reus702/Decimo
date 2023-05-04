@@ -32,8 +32,6 @@ export class Tab2Page {
     }
   }
 
- 
-
   async openPicker() {
     const options = [];
     for (let i = 1; i <= 20; i++) {
@@ -96,5 +94,9 @@ export class Tab2Page {
   handleChangeCampo(value: string) {
     this.campoCorrente = value;
     console.log("provincia: "+this.provinciaCorrente);
+  }
+
+  isLoggedIn(){
+    return localStorage.getItem("session") ? true : false;
   }
 }

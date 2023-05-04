@@ -14,43 +14,42 @@ export class Tab3Page {
   }
 
   ngOnInit(){
-    if(localStorage.getItem("session")?.length == 0){
-      this.router.navigate(['/login']); 
+   if(localStorage.getItem("session") == null){
+    this.router.navigateByUrl('/login');
     }
-    /*
-    if(localStorage.length == 0){
-      this.router.navigate(['/login']);
-    }*/
   }
 
   getEmail(){
-    if(localStorage.getItem("session")?.length != 0){
+    if(localStorage.getItem("session") != null){
       return JSON.parse(localStorage.getItem("session") || "").email;   
     }
   }
 
   getNome(){
-    if(localStorage.getItem("session")?.length != 0){
+    if(localStorage.getItem("session") != null){
       return JSON.parse(localStorage.getItem("session") || "").nome;   
     }
   }
 
   getProvincia(){
-    if(localStorage.getItem("session")?.length != 0){
+    if(localStorage.getItem("session") != null){
       return JSON.parse(localStorage.getItem("session") || "").provincia;   
     }
   }
 
   getBio(){
-    if(localStorage.getItem("session")?.length != 0){
+    
+    if(localStorage.getItem("session") != null){
       return JSON.parse(localStorage.getItem("session") || "").bio;   
     }
   }
 
   logout(){
-    //localStorage.removeItem("session");
-    localStorage.setItem("session", "");
-    //this.router.navigate(['/login']);
-    this.router.navigate(['/login'], {replaceUrl: true});
+    localStorage.removeItem("session");
+    this.router.navigateByUrl('/login');
+  }
+
+  isLoggedIn(){
+    return localStorage.getItem("session") ? true : false;
   }
 }

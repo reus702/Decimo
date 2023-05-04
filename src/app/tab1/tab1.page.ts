@@ -50,5 +50,7 @@ export class Tab1Page {
     else return false;
   }
 
-  
+  isLoggedIn(){
+    return localStorage.getItem("session") ? true : false;
+  }
 }
