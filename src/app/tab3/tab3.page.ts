@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { LoginPage } from '../login/login.page';
 import { Router } from '@angular/router';
+import { Partita } from '../services/partita';
+import { DatePipe } from '@angular/common'
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-tab3',
@@ -8,15 +11,13 @@ import { Router } from '@angular/router';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-  
+  campo: Partita[] | undefined;
 
-  constructor(private loginPage: LoginPage,private router: Router) {
+  constructor(private loginPage: LoginPage,private router: Router,public datepipe: DatePipe,private userService: UserService) {
   }
 
   ngOnInit(){
-   if(localStorage.getItem("session") == null){
-    this.router.navigateByUrl('/login');
-    }
+    this.campo = this.userService.richiestaPartiteGiocate(JSON.parse(localStorage.getItem("session") || "").email); 
   }
 
   getEmail(){
@@ -38,7 +39,6 @@ export class Tab3Page {
   }
 
   getBio(){
-    
     if(localStorage.getItem("session") != null){
       return JSON.parse(localStorage.getItem("session") || "").bio;   
     }
@@ -51,5 +51,9 @@ export class Tab3Page {
 
   isLoggedIn(){
     return localStorage.getItem("session") ? true : false;
+  }
+
+  getOrario(orario:Date) {
+    return this.datepipe.transform(orario, 'dd-MM-yyyy HH:mm');
   }
 }

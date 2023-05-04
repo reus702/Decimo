@@ -107,8 +107,6 @@ app.post('/api/campiPerProvincia', (req, res) => {
 });
 
 app.post('/api/ricercaPartite', (req, res) => {
-
-  console.log(req.body.ricerca);
   connection.query('SELECT * FROM `partite` WHERE orario >= CURRENT_TIMESTAMP AND (`organizzatore` = "'+req.body.ricerca+'" OR `campo` = "'+req.body.ricerca+'"  OR `descrizione`  =  "'+req.body.ricerca+'") ', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
@@ -119,6 +117,18 @@ app.post('/api/ricercaPartite', (req, res) => {
   });
 });
 
+app.post('/api/ricercaPartiteGiocate', (req, res) => {
+  //connection.query('SELECT * FROM `partite_giocatore` WHERE `giocatore` = "'+req.body.userEmail+'" ', (error, results) => {
+  connection.query('SELECT * FROM `partite` as p,`partite_giocatore` as pg, campi as c WHERE pg.`giocatore` = "'+req.body.userEmail+'" AND pg.`partita` = p.`id` AND c.`descrizione` = p.`campo`;', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
 
 app.post('/api/campiProvincia', (req, res) => {
   connection.query('SELECT `descrizione` FROM `campi` WHERE `provincia`="'+req.body.provincia+'";', (error, results) => {

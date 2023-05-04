@@ -30,8 +30,7 @@ export class UserService {
     //return this.http.get(this.apiUrl);
   }
 
-  richiestaCampi(provincia: string):Partita[]
-  {
+  richiestaCampi(provincia: string):Partita[] {
     const body = {provincia: provincia};
     let campi:Partita[]=[];
     this.apiUrl = environment.baseUrl + '/campiPerProvincia';
@@ -49,8 +48,7 @@ export class UserService {
     return campi;
   }
 
-  ricercaCampi(ricerca:String|null,provincia: string):Partita[]
-  {
+  ricercaCampi(ricerca:String|null,provincia: string):Partita[] {
     const body = {ricerca: ricerca};
     let campi:Partita[]=[];
     this.apiUrl = environment.baseUrl + '/ricercaPartite';
@@ -59,9 +57,7 @@ export class UserService {
       if (!result || Object.keys(result).length == 0) {
         console.log("NESSUNA PARTITA DISPONIBILE CON QUESTA RICERCA");
       } else {
-        for(let i = 0 ; i<Object.keys(result).length ;i++)
-        {
-          console.log("ESTRAGGO PARTITE");
+        for(let i = 0 ; i<Object.keys(result).length ;i++) {
           campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto 
         }
       }
@@ -142,6 +138,25 @@ export class UserService {
     this.http.post(this.apiUrl,body).subscribe((result:any) => {
       console.log(result);
     });
+  }
+
+  richiestaPartiteGiocate(userEmail: string){
+    const body = { userEmail: userEmail }
+    let partiteGiocate:Partita[]=[];
+
+    this.apiUrl = environment.baseUrl + '/ricercaPartiteGiocate';
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      if (!result || Object.keys(result).length == 0) {
+        console.log("NESSUNA PARTITA DISPONIBILE");
+      } else {
+        for(let i = 0 ; i<Object.keys(result).length ;i++) {
+          partiteGiocate[i] = new Partita(result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto partita
+        }
+      }
+    });
+    
+    return partiteGiocate;
+
   }
 
 }

@@ -14,6 +14,7 @@ export class Tab1Page {
   ricerca = new FormGroup({
     cerca : new FormControl('',[Validators.required])
   })
+  
   campo: Partita[] | undefined;
 
   constructor(private router: Router,private userService: UserService,public datepipe: DatePipe) {
@@ -33,17 +34,15 @@ export class Tab1Page {
     if(localStorage.getItem("session")?.length == 0){
       this.router.navigate(['/login']);
     }else{
-      
       this.campo = this.userService.ricercaCampi(cerca,JSON.parse(localStorage.getItem("session") || "").provincia);
     }
   }
 
-  getOrario(orario:Date)
-  {
+  getOrario(orario:Date) {
     return this.datepipe.transform(orario, 'dd-MM-yyyy HH:mm');
   }
-  controlloLunghezza(): boolean
-  {
+
+  controlloLunghezza(): boolean {
     if(this.campo?.length == 0) return true
     else return false;
   }
