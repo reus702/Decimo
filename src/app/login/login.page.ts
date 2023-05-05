@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
   }
 
   loginForm = new FormGroup({
-    email:new FormControl('',[Validators.email, Validators.required,Validators.pattern('[a-zA-Z0-9]+$')]),
+    email:new FormControl('',[Validators.email, Validators.required]),
     password:new FormControl('',[Validators.required, Validators.minLength(8),Validators.pattern('[a-zA-Z0-9]+$')]),
   })
 
