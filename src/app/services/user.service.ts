@@ -41,7 +41,7 @@ export class UserService {
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++)
         {
-          campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto utente
+          campi[i] = new Partita(result[i].id,result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto utente
         }
       }
     });
@@ -58,7 +58,7 @@ export class UserService {
         console.log("NESSUNA PARTITA DISPONIBILE CON QUESTA RICERCA");
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++) {
-          campi[i] = new Partita(result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto 
+          campi[i] = new Partita(result[i].id,result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto 
         }
       }
     });
@@ -150,13 +150,30 @@ export class UserService {
         console.log("NESSUNA PARTITA DISPONIBILE");
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++) {
-          partiteGiocate[i] = new Partita(result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto partita
+          partiteGiocate[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto partita
         }
       }
-    });
-    
+    }); 
     return partiteGiocate;
-
   }
 
+  inserisciPartitaGiocatore(idPartita:number,giocatore:string) : boolean
+  {
+    const body = {
+       userEmail: giocatore,
+       idPartita:idPartita
+    }
+    console.log("USER SERVICE");
+    this.apiUrl = environment.baseUrl + '/inserisciPartitaGiocatore';
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      if (!result || Object.keys(result).length == 0) {
+        console.log("NESSUNA PARTITA DISPONIBILE");
+        return false;
+      } else {
+        console.log("PARTITA REGISTRATA");
+        return true;
+      }
+    }); 
+    return true;
+  }
 }

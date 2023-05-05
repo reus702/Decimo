@@ -1,11 +1,13 @@
 export class Partita {
+    id:number
     personeMancanti:number;
     descrizione: string;    
     provincia: string;
     tipo: string;
     orario:Date;
 
-    constructor(descrizione:string,provincia:string,tipo:string,n:number,or:Date) {
+    constructor(id:number,descrizione:string,provincia:string,tipo:string,n:number,or:Date) {
+        this.id = id;
         this.descrizione = descrizione;
         this.provincia = provincia;
         this.tipo = tipo;

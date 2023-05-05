@@ -141,6 +141,17 @@ app.post('/api/campiProvincia', (req, res) => {
   });
 });
 
+app.post('/api/inserisciPartitaGiocatore', (req, res) => {
+  console.log("CENTRO AL DB");
+  connection.query('INSERT INTO `partite_giocatore`(`giocatore`, `partita`) VALUES ("'+req.body.userEmail+'","'+req.body.idPartita+'")', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      res.json(results);
+    }
+  });
+});
 app.listen(3000, () => {
   console.log('API server listening on port 3000');
 });

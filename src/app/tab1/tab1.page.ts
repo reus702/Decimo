@@ -50,4 +50,16 @@ export class Tab1Page {
   isLoggedIn(){
     return localStorage.getItem("session") ? true : false;
   }
+
+  giocaPartita(idPartita:number)
+  {
+    if(this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email))
+    {
+      alert("Il giocatore parteciperà alla partita");
+    }else
+    {
+      alert("Errore nel registrazione della partita riprovare");
+    }
+    
+  }
 }
