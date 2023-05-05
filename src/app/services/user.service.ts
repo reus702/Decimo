@@ -157,23 +157,46 @@ export class UserService {
     return partiteGiocate;
   }
 
-  inserisciPartitaGiocatore(idPartita:number,giocatore:string) : boolean
-  {
-    const body = {
-       userEmail: giocatore,
-       idPartita:idPartita
-    }
-    console.log("USER SERVICE");
-    this.apiUrl = environment.baseUrl + '/inserisciPartitaGiocatore';
+  inserisciPartitaGiocatore(idPartita:number,giocatore:string) : Promise<boolean>
+{
+  const body = {
+     userEmail: giocatore,
+     idPartita:idPartita
+  }
+  this.apiUrl = environment.baseUrl + '/inserisciPartitaGiocatore';
+
+  return new Promise((resolve, reject) => {
     this.http.post(this.apiUrl,body).subscribe((result: any) => {
       if (!result || Object.keys(result).length == 0) {
         console.log("NESSUNA PARTITA DISPONIBILE");
-        return false;
+        resolve(false);
       } else {
         console.log("PARTITA REGISTRATA");
-        return true;
+        resolve(true);
       }
+    }, error => {
+      console.log("ERRORE: " + error);
+      reject(false);
     }); 
-    return true;
+  });
+}
+
+
+  aggiornaGiocatoriMancanti(idPartita:number,personeMancanti:number)
+  {
+    const body = {
+      personeMancanti: personeMancanti,
+      id:idPartita
+    }
+
+    this.apiUrl = environment.baseUrl + '/updateGiocatoriMancanti';
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      if (!result || Object.keys(result).length == 0) {
+        console.log("ERRORE");
+      } else {
+        console.log("PARTITA AGGIORNATA");
+      }
+    });
+
   }
 }

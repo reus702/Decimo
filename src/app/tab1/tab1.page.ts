@@ -51,15 +51,20 @@ export class Tab1Page {
     return localStorage.getItem("session") ? true : false;
   }
 
-  giocaPartita(idPartita:number)
-  {
-    if(this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email))
-    {
-      alert("Il giocatore parteciperà alla partita");
-    }else
-    {
+  giocaPartita(idPartita:number,personeMancanti:number)
+{
+  this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email)
+    .then(result => {
+      if (result) {
+        this.userService.aggiornaGiocatoriMancanti(idPartita,personeMancanti-1);
+        alert("Il giocatore parteciperà alla partita");
+      } else {
+        alert("Errore nel registrazione della partita riprovare");
+      }
+    })
+    .catch(error => {
       alert("Errore nel registrazione della partita riprovare");
-    }
-    
-  }
+    });
+}
+
 }

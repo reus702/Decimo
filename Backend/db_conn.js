@@ -165,6 +165,18 @@ app.post('/api/inserisciPartitaGiocatore', (req, res) => {
     }
   });
 });
+app.post('/api/updateGiocatoriMancanti', (req, res) => {
+  connection.query('UPDATE partite SET `persone_mancanti` = "'+req.body.personeMancanti+'"  WHERE `id` = "'+req.body.id+'"', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.listen(3000, () => {
   console.log('API server listening on port 3000');
 });
+
