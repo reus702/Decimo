@@ -94,9 +94,12 @@ app.post('/api/getprov', (req,res) => {
   });
 });
 
+/*
+/ Questo metodo restituisce le partite presenti di una provincia passata
+*/
 app.post('/api/campiPerProvincia', (req, res) => {
 
-  connection.query('SELECT p.* FROM partite as p INNER JOIN campi as c ON c.descrizione = p.campo WHERE c.provincia = "'+req.body.provincia+'" AND p.orario >= CURRENT_TIMESTAMP', (error, results) => {
+  connection.query('SELECT p.* FROM partite as p INNER JOIN campi as c ON c.descrizione = p.campo WHERE c.provincia = "'+req.body.provincia+'" AND p.orario >= CURRENT_TIMESTAMP AND p.persone_mancanti>=0', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
@@ -106,8 +109,11 @@ app.post('/api/campiPerProvincia', (req, res) => {
   });
 });
 
+/*
+/ Questo metodo cerca una partita per parola chiave
+*/
 app.post('/api/ricercaPartite', (req, res) => {
-  connection.query('SELECT * FROM `partite` WHERE orario >= CURRENT_TIMESTAMP AND (`organizzatore` = "'+req.body.ricerca+'" OR `campo` = "'+req.body.ricerca+'"  OR `descrizione`  =  "'+req.body.ricerca+'") ', (error, results) => {
+  connection.query('SELECT * FROM `partite` WHERE  persone_mancanti>=0 AND orario >= CURRENT_TIMESTAMP AND (`organizzatore` = "'+req.body.ricerca+'" OR `campo` = "'+req.body.ricerca+'"  OR `descrizione`  =  "'+req.body.ricerca+'") ', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
@@ -117,6 +123,9 @@ app.post('/api/ricercaPartite', (req, res) => {
   });
 });
 
+/*
+/ Questo metodo ricerca le partite fatte da un singolo giocatore
+*/
 app.post('/api/ricercaPartiteGiocate', (req, res) => {
   //connection.query('SELECT * FROM `partite_giocatore` WHERE `giocatore` = "'+req.body.userEmail+'" ', (error, results) => {
   connection.query('SELECT * FROM `partite` as p,`partite_giocatore` as pg, campi as c WHERE pg.`giocatore` = "'+req.body.userEmail+'" AND pg.`partita` = p.`id` AND c.`descrizione` = p.`campo`;', (error, results) => {
@@ -130,6 +139,9 @@ app.post('/api/ricercaPartiteGiocate', (req, res) => {
   });
 });
 
+/*
+/ Questo metodo restituisce i campi presenti nella provincia passata
+*/
 app.post('/api/campiProvincia', (req, res) => {
   connection.query('SELECT `descrizione` FROM `campi` WHERE `provincia`="'+req.body.provincia+'";', (error, results) => {
     if (error) {
@@ -140,9 +152,10 @@ app.post('/api/campiProvincia', (req, res) => {
     }
   });
 });
-
+/*
+/ Questo metodo salva i giocatore che partecipano a una partita nel db
+*/
 app.post('/api/inserisciPartitaGiocatore', (req, res) => {
-  console.log("CENTRO AL DB");
   connection.query('INSERT INTO `partite_giocatore`(`giocatore`, `partita`) VALUES ("'+req.body.userEmail+'","'+req.body.idPartita+'")', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
