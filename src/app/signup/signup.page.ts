@@ -17,7 +17,7 @@ export class SignupPage implements OnInit {
   email:new FormControl('',[Validators.email, Validators.required]),
   password:new FormControl('',[Validators.required, Validators.minLength(8),Validators.pattern('[a-zA-Z0-9]+$')]),
   confirmpwd: new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9]+$')]),
- // provincia:new FormControl('',[Validators.required])
+  provincia:new FormControl('',[Validators.required])
 }, [controlloPwd("password","confirmpwd")]);
 //getter vallidatori form registraizone
   get nomeFormControl(){return this.signupForm.get('nome')}

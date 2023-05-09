@@ -28,7 +28,7 @@
       <ion-label position="floating">Provincia</ion-label>
       <ion-list >
         <ion-item>
-          <ion-select placeholder="Provincia" label="Seleziona provincia" #prov (ionChange)="handleChange(prov.value)" okText="Conferma" cancelText="Annulla">
+          <ion-select placeholder="Provincia" label="Seleziona provincia" #prov (ionChange)="handleChange(prov.value)" okText="Conferma" cancelText="Annulla" formControlName="provincia">
             <ion-select-option *ngFor="let prov of listaProvince" [value]="prov">{{prov}}</ion-select-option>
           </ion-select>
         </ion-item>
@@ -37,13 +37,13 @@
     <ion-row>
       <ion-col>
         <ion-button [disabled]="signupForm.invalid" [routerLink]="['/login']" type="submit" color="danger" expand="block">Sign Up</ion-button>
-        <ion-label style="color: red" *ngIf="nomeFormControl && nomeFormControl.invalid && nomeFormControl.touched" >Input del nome non valido</ion-label>
+        <ion-label style="color: red" *ngIf="nomeFormControl && nomeFormControl.invalid">Nome non valido</ion-label>
         <br>
-        <ion-label style="color: red"  *ngIf="emailFormControl && emailFormControl.invalid && emailFormControl.touched" >Email non valida</ion-label>
+        <ion-label style="color: red"  *ngIf="emailFormControl && emailFormControl.invalid " >Email non valida</ion-label>
         <br>
-        <ion-label style="color: red"  *ngIf="passwordFormControl && passwordFormControl.invalid && passwordFormControl.touched" >La password deve essere lunga lameno 8 caratteri</ion-label>
+        <ion-label style="color: red"  *ngIf="passwordFormControl && passwordFormControl.invalid " >La password deve essere lunga lameno 8 caratteri</ion-label>
         <br>
-        <ion-label style="color: red"  *ngIf="provinciaFormControl && provinciaFormControl.invalid && provinciaFormControl.touched" >La provincia deve essere lunga 2 caratteri (A-Z)</ion-label>
+        <ion-label style="color: red"  *ngIf="provinciaFormControl && provinciaFormControl.invalid " >Seleziona la tua provincia </ion-label>
         <br>
         <ion-label style="color: red"  *ngIf="signupForm.errors?.['passwordMismatchError']" >Le password non coincidono</ion-label>
       </ion-col>
