@@ -12,7 +12,7 @@ import { DatePipe } from '@angular/common'
 })
 export class Tab1Page {
   ricerca = new FormGroup({
-    cerca : new FormControl('',[Validators.required])
+    cerca : new FormControl('',[Validators.required, Validators.pattern('[a-zA-Z0-9]+$')])
   })
   
   campo: Partita[] | undefined;
