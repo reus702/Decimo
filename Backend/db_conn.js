@@ -15,6 +15,8 @@ const connection = mysql.createConnection({
   database: 'decimodb'
 });
 
+const secret = "aWXZOwI4GlhosrHJOsVePzIYOhZRwGmO"
+
 connection.connect((error) => {
   if (error) {
     console.error('Error connecting to MySQL database', error);
@@ -27,8 +29,10 @@ connection.connect((error) => {
 / Questo metodo registra un utente all'applicazione
 */
 app.post('/api/signup', (req, res) => {
+  let userpass = req.body.password + secret;
+  console.log(userpass);
   bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(req.body.password, salt, function(err, hash) {
+      bcrypt.hash(userpass, salt, function(err, hash) {
         connection.query('INSERT INTO `utenti`(`email`, `password`, `salt`, `nome`, `bio`, `provincia`)  VALUES ("'+req.body.email+'","'+hash+'","'+salt+'","'+req.body.nome+'","","'+req.body.provincia+'")', (error, results) => {
           if (error) {
             console.error('Error executing MySQL query', error);
@@ -52,7 +56,8 @@ app.post('/api/login', (req, res) => {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
-      bcrypt.hash(req.body.password, results[0].salt, function(err, hash) {
+      let userpass = req.body.password + secret;
+      bcrypt.hash(userpass, results[0].salt, function(err, hash) {
         if(hash == results[0].password){
           console.log('Utente verificato!');
           res.json(results);
