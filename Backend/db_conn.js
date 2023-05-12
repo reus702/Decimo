@@ -118,7 +118,7 @@ app.post('/api/campiPerProvincia', (req, res) => {
 / Questo metodo cerca una partita per parola chiave
 */
 app.post('/api/ricercaPartite', (req, res) => {
-  connection.query('SELECT * FROM `partite` WHERE  persone_mancanti>=0 AND orario >= CURRENT_TIMESTAMP AND (`organizzatore` = "'+req.body.ricerca+'" OR `campo` = "'+req.body.ricerca+'"  OR `descrizione`  =  "'+req.body.ricerca+'") ', (error, results) => {
+  connection.query('SELECT DISTINCT * FROM `partite` INNER JOIN `campi` ON  `partite`.campo = `campi`.descrizione WHERE  persone_mancanti>=0 AND orario >= CURRENT_TIMESTAMP AND (`organizzatore` = "'+req.body.ricerca+'" OR `campo` = "'+req.body.ricerca+'"  OR  `campi`.`descrizione`  = "'+req.body.ricerca+'" OR campi.provincia ="'+req.body.ricerca+'") ', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');

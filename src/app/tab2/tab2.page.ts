@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PickerController } from '@ionic/angular';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common'
 
 @Component({
@@ -65,17 +65,26 @@ export class Tab2Page {
     await picker.present();
   }
 
-  newGame(form: NgForm) {
+  newMatchForm = new FormGroup({
+    //giocatori_mancanti:new FormControl('',[butt]),
+    data_ora:new FormControl('',[Validators.required]),
+    info: new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9" "]+$')]),
+    provincia:new FormControl('',[Validators.required]),
+    campo:new FormControl('',[Validators.required])
+  })
+
+  newGame() {
     const giocatoriRimanenti = this.number_player;
-    const infoPartita = form.value.infoPartita;
+    const infoPartita = this.newMatchForm.controls['info'].value;
     const emailUser = JSON.parse(localStorage.getItem("session") || "").email;
-    let dataPartita = form.value.dataPartita;
+    let dataPartita =this.newMatchForm.controls['data_ora'].value;
     dataPartita = this.datepipe.transform(dataPartita, 'yyyy-MM-dd HH:mm:ss');
 
     let gameInfo: string[] = [emailUser,giocatoriRimanenti,this.campoCorrente,infoPartita,dataPartita];
     
     this.userService.newGame(gameInfo);
-    form.reset();
+    this.newMatchForm.reset();
+    //form.reset();
   }
 
   getProvince(){
