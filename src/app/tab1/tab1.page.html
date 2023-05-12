@@ -12,16 +12,23 @@
     <ion-toolbar>
       <ion-title size="large" vertical="top" horizontal="">Decimo</ion-title>
     </ion-toolbar>
+    <ion-toolbar>
+      <form [formGroup]="ricerca" (ngSubmit)="ricercaCampi()" >
+        <ion-item lines="full">
+          <ion-searchbar name="cerca" formControlName="cerca"></ion-searchbar>
+        </ion-item>
+      </form>
+    </ion-toolbar>
   </ion-header>
 
   <app-explore-container name="Home"></app-explore-container>
-  <form [formGroup]="ricerca" (ngSubmit)="ricercaCampi()" >
+  <!--<form [formGroup]="ricerca" (ngSubmit)="ricercaCampi()" >
     <ion-item lines="full">
       <ion-label position="floating">Ricerca...</ion-label>
       <ion-input type="text" name="cerca" formControlName="cerca" ></ion-input>
       <ion-button type = "submit">CERCA</ion-button>
     </ion-item>
-  </form>
+  </form>-->
   <ion-item *ngIf="controlloLunghezza()">
       Nessun campo salvato in questa provincia nel sistema
   </ion-item>
