@@ -41,7 +41,7 @@ export class UserService {
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++)
         {
-          campi[i] = new Partita(result[i].id,result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto utente
+          campi[i] = new Partita(result[i].id,result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via); //creo oggetto utente
         }
       }
     });
@@ -58,7 +58,7 @@ export class UserService {
         console.log("NESSUNA PARTITA DISPONIBILE CON QUESTA RICERCA");
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++) {
-          campi[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto 
+          campi[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via); //creo oggetto 
         }
       }
     });
@@ -150,7 +150,7 @@ export class UserService {
         console.log("NESSUNA PARTITA DISPONIBILE");
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++) {
-          partiteGiocate[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario); //creo oggetto partita
+          partiteGiocate[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via); //creo oggetto partita
         }
       }
     }); 
