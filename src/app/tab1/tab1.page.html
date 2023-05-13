@@ -12,16 +12,16 @@
     <ion-toolbar>
       <ion-title size="large" vertical="top" horizontal="">Decimo</ion-title>
     </ion-toolbar>
-    <ion-toolbar>
-      <form [formGroup]="ricerca" (ngSubmit)="ricercaCampi()" >
-        <ion-item lines="full">
-          <ion-searchbar name="cerca" formControlName="cerca"></ion-searchbar>
-        </ion-item>
-      </form>
-    </ion-toolbar>
   </ion-header>
 
   <app-explore-container name="Home"></app-explore-container>
+  <ion-toolbar>
+    <form [formGroup]="ricerca" (ngSubmit)="ricercaCampi()" >
+      <ion-item lines="full">
+        <ion-searchbar name="cerca" formControlName="cerca"></ion-searchbar>
+      </ion-item>
+    </form>
+  </ion-toolbar>
   <!--<form [formGroup]="ricerca" (ngSubmit)="ricercaCampi()" >
     <ion-item lines="full">
       <ion-label position="floating">Ricerca...</ion-label>
