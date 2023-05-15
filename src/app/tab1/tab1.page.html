@@ -54,6 +54,24 @@
           ORARIO : {{getOrario(app.orario)}}
         </ion-card-content>
         <ion-button fill="clear" (click)="giocaPartita(app.id,app.personeMancanti)">Gioca alla partita</ion-button>
+        <ion-button fill="clear" id="open-modal" (click)="getGiocatoriIscritti(app.id)">Visualizza giocatori iscritti</ion-button>
+        <ion-modal #lista trigger="open-modal" [canDismiss]="chiudiLista()" >
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>Giocatori iscirtti alla partita</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button (click)="lista.dismiss()">Chiudi</ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+              <ion-item *ngFor="let giocatore of giocatori_iscritti">
+                <label>{{giocatore}}</label><br>
+              </ion-item>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
       </ion-card>
     </ion-item>
 

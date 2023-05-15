@@ -181,6 +181,17 @@ app.post('/api/updateGiocatoriMancanti', (req, res) => {
   });
 });
 
+app.post('/api/giocatoriIscritti',(req,res)=> {
+  connection.query('SELECT nome FROM utenti INNER JOIN partite_giocatore ON partite_giocatore.giocatore = utenti.email WHERE partita = "'+req.body.partita+'"', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      res.json(results);
+    }
+  })
+})
+
 app.listen(3000, () => {
   console.log('API server listening on port 3000');
 });

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Partita } from '../services/partita';
+import { User } from '../services/user';
 import { UserService } from '../services/user.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common'
@@ -11,14 +12,16 @@ import { DatePipe } from '@angular/common'
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+ 
   ricerca = new FormGroup({
     cerca : new FormControl('',[Validators.required, Validators.pattern('[a-zA-Z0-9]+$')])
   })
   
   campo: Partita[] | undefined;
+  giocatori_iscritti: string[];
 
   constructor(private router: Router,private userService: UserService,public datepipe: DatePipe) {
-    var campo:Partita[];
+    this.giocatori_iscritti = [];
   }
 
   ngOnInit(){
@@ -51,8 +54,7 @@ export class Tab1Page {
     return localStorage.getItem("session") ? true : false;
   }
 
-  giocaPartita(idPartita:number,personeMancanti:number)
-{
+  giocaPartita(idPartita:number,personeMancanti:number){
   this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email)
     .then(result => {
       if (result) {
@@ -65,6 +67,13 @@ export class Tab1Page {
     .catch(error => {
       alert("Errore nel registrazione della partita riprovare");
     });
-}
+  }
 
+  getGiocatoriIscritti(idPartita:number) {
+    this.giocatori_iscritti = this.userService.getGiocatoriIscritti(idPartita);
+  }
+
+  async chiudiLista( role?: string) {
+    return role !== 'gesture';
+  }
 }

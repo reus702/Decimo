@@ -157,33 +157,30 @@ export class UserService {
     return partiteGiocate;
   }
 
-  inserisciPartitaGiocatore(idPartita:number,giocatore:string) : Promise<boolean>
-{
-  const body = {
-     userEmail: giocatore,
-     idPartita:idPartita
+  inserisciPartitaGiocatore(idPartita:number,giocatore:string) : Promise<boolean>{
+    const body = {
+      userEmail: giocatore,
+      idPartita:idPartita
+    }
+    this.apiUrl = environment.baseUrl + '/inserisciPartitaGiocatore';
+
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl,body).subscribe((result: any) => {
+        if (!result || Object.keys(result).length == 0) {
+          console.log("NESSUNA PARTITA DISPONIBILE");
+          resolve(false);
+        } else {
+          console.log("PARTITA REGISTRATA");
+          resolve(true);
+        }
+      }, error => {
+        console.log("ERRORE: " + error);
+        reject(false);
+      }); 
+    });
   }
-  this.apiUrl = environment.baseUrl + '/inserisciPartitaGiocatore';
 
-  return new Promise((resolve, reject) => {
-    this.http.post(this.apiUrl,body).subscribe((result: any) => {
-      if (!result || Object.keys(result).length == 0) {
-        console.log("NESSUNA PARTITA DISPONIBILE");
-        resolve(false);
-      } else {
-        console.log("PARTITA REGISTRATA");
-        resolve(true);
-      }
-    }, error => {
-      console.log("ERRORE: " + error);
-      reject(false);
-    }); 
-  });
-}
-
-
-  aggiornaGiocatoriMancanti(idPartita:number,personeMancanti:number)
-  {
+  aggiornaGiocatoriMancanti(idPartita:number,personeMancanti:number){
     const body = {
       personeMancanti: personeMancanti,
       id:idPartita
@@ -197,6 +194,24 @@ export class UserService {
         console.log("PARTITA AGGIORNATA");
       }
     });
+  }
 
+  getGiocatoriIscritti(idPartita:number){
+    const body={partita: idPartita}
+    let giocatori: string[]=[];
+
+    this.apiUrl = environment.baseUrl + '/giocatoriIscritti';
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      if(!result){
+        console.log("Errore nell'estrazione dei giocatori iscritti");
+      }
+      console.log("Giocatori estratti con successo");
+      for(let i = 0 ; i<Object.keys(result).length ;i++) {
+        console.log(result[i].nome);
+        giocatori[i] = result[i].nome;
+      }
+    })
+
+    return giocatori;
   }
 }
