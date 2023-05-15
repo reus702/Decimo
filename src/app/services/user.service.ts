@@ -116,10 +116,25 @@ export class UserService {
     return provList;
   }
 
+<<<<<<< HEAD
   /**
    * 
    * @param userInfo informazioni dell'utente per effettuare il login
    */
+=======
+  getTipologieCampo(){
+    this.apiUrl = environment.baseUrl+'/gettipicampo';
+    let tipiCampoList:string[] = [];
+
+    this.http.post(this.apiUrl,"").subscribe((result:any) => {
+      for(let i = 0; i < result.length; i ++){
+        tipiCampoList[i] = JSON.parse(JSON.stringify(result[i].tipo));
+      }      
+    });
+    return tipiCampoList;
+  }
+
+>>>>>>> d4e12e34f3cbc59b324ac6b855f3bbc160c304d0
   logIn(userInfo: string[]){
     const body = {
       email: userInfo[0],
@@ -160,11 +175,29 @@ export class UserService {
     });
   }
 
+<<<<<<< HEAD
   /**
    * 
    * @param userEmail email del giocatore che vuole vedere le sue partite
    * @returns lista di partite giocate
    */
+=======
+  newField(fieldInfo: string[]) {
+    const body = {
+      provinciaCampo: fieldInfo[0],
+      tipoCampo: fieldInfo[1],
+      descCampo: fieldInfo[2],
+      viaCampo: fieldInfo[3]
+    }
+    
+    this.apiUrl = environment.baseUrl+'/newfield';
+
+    this.http.post(this.apiUrl,body).subscribe((result:any) => {
+      console.log(result);
+    });
+  }
+
+>>>>>>> d4e12e34f3cbc59b324ac6b855f3bbc160c304d0
   richiestaPartiteGiocate(userEmail: string){
     const body = { userEmail: userEmail }
     let partiteGiocate:Partita[]=[];

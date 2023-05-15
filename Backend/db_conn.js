@@ -184,7 +184,7 @@ app.post('/api/updateGiocatoriMancanti', (req, res) => {
   });
 });
 
-//questo metodo restituisce la lista dei giocatori iscirtti ad un partita
+//questo metodo restituisce la lista dei giocatori iscritti ad un partita.
 app.post('/api/giocatoriIscritti',(req,res)=> {
   connection.query('SELECT nome FROM utenti INNER JOIN partite_giocatore ON partite_giocatore.giocatore = utenti.email WHERE partita = "'+req.body.partita+'"', (error, results) => {
     if (error) {
