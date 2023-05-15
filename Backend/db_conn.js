@@ -39,7 +39,6 @@ app.post('/api/signup', (req, res) => {
             console.error('Error executing MySQL query', error);
             res.status(500).send('Error executing MySQL query');
           } else {
-            console.log('Utente registrato!');
             res.json(results);
           }
         });
@@ -60,7 +59,6 @@ app.post('/api/login', (req, res) => {
       let userpass = req.body.password + secret;
       bcrypt.hash(userpass, results[0].salt, function(err, hash) {
         if(hash == results[0].password){
-          console.log('Utente verificato!');
           res.json(results);
         }else{
           res.status(500).send('password errata');
@@ -79,7 +77,6 @@ app.post('/api/newgame', (req, res) => {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
-      console.log('Partita registrata!');
       res.json(results);
     }
   });
@@ -94,7 +91,6 @@ app.post('/api/getprov', (req,res) => {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
-      console.log("Province trovate")
       res.json(results);
     }
   });
