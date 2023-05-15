@@ -31,7 +31,7 @@ connection.connect((error) => {
 */
 app.post('/api/signup', (req, res) => {
   let userpass = req.body.password + secret;
-  console.log(userpass);
+
   bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(userpass, salt, function(err, hash) {
         connection.query('INSERT INTO `utenti`(`email`, `password`, `salt`, `nome`, `bio`, `provincia`)  VALUES ("'+req.body.email+'","'+hash+'","'+salt+'","'+req.body.nome+'","","'+req.body.provincia+'")', (error, results) => {
@@ -45,6 +45,17 @@ app.post('/api/signup', (req, res) => {
       });
     })
   
+});
+
+app.post('/api/gettipicampo', (req, res) => {
+  connection.query('SELECT `tipo` FROM `tipo_campo`;', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      res.json(results);
+    }
+  });
 });
 
 /*
@@ -77,6 +88,18 @@ app.post('/api/newgame', (req, res) => {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
+      res.json(results);
+    }
+  });
+});
+
+app.post('/api/newfield', (req, res) => {
+  connection.query('INSERT INTO `campi`(`provincia`, `descrizione`, `tipoCampo`, `via`) VALUES ("'+req.body.provinciaCampo+'","'+req.body.descCampo+'","'+req.body.tipoCampo+'","'+req.body.viaCampo+'")', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      console.log('Campo registrato!');
       res.json(results);
     }
   });
