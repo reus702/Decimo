@@ -28,13 +28,10 @@ export class Tab2Page {
     this.campoCorrente = "";
   }
 
-  ngOnInit(){
-    if(localStorage.getItem("session")?.length == 0){
-      this.router.navigate(['/login']); 
-    }
-  }
-
-  async openPicker() {
+  /**
+   * Funzione che gestisce il picker per il numero di giocatori mancanti ad una partita
+   */
+  async openPickerNumberPlayer() {
     const options = [];
     for (let i = 1; i <= 20; i++) {
       options.push({
@@ -67,6 +64,9 @@ export class Tab2Page {
     await picker.present();
   }
 
+  /**
+   * Form group per i dati relativi alla partita, con i relativi validatori
+   */
   newMatchForm = new FormGroup({
     data_ora:new FormControl('',[Validators.required]),
     info: new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9" "]+$')]),
@@ -74,6 +74,9 @@ export class Tab2Page {
     campo:new FormControl('',[Validators.required])
   })
 
+  /**
+   * Form group per i dati relativi al campo, con i relativi validatori
+   */
   newFieldForm = new FormGroup({
     provinciaCampo: new FormControl('',[Validators.required]),
     tipoCampo:new FormControl('',[Validators.required]),
@@ -81,7 +84,9 @@ export class Tab2Page {
     viaCampo: new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9" "]+$')]),
   })
 
-
+  /**
+   * Funzione che gestisce l'azione del bottone che crea la partita
+   */
   newGame() {
     const giocatoriRimanenti = this.number_player;
     const infoPartita = this.newMatchForm.controls['info'].value;
@@ -95,6 +100,9 @@ export class Tab2Page {
     this.newMatchForm.reset();
   }
 
+  /**
+   * Funzione che gestisce l'azione del bottone che aggiunge il campo
+   */
   nuovoCampo() {
     const provinciaCampo = this.newFieldForm.controls['provinciaCampo'].value;
     const tipoCampo = this.newFieldForm.controls['tipoCampo'].value;
@@ -107,28 +115,52 @@ export class Tab2Page {
     this.newFieldForm.reset();
   }
 
+  /**
+   * Restituisce le province da inserire nelle combobox
+   * @returns lista province
+   */
   getProvince(){
     return this.userService.getProvince();
   }
 
+   /**
+   * Restituisce i campi appartenenti alla provincia scelta nella combobox delle province
+   * @returns lista campi
+   */
   getCampiProvincia(){
     this.listaCampi = this.userService.listaCampiPerProvincia(this.provinciaCorrente);
   }
 
+  /**
+   * Quando viene scelta una provincia nella combobox, vengono caricati i campi appartenenti alla provincia scelta
+   * nella combobox dei campi
+   * @param value provincia scelta nella combobox delle province
+   */
   handleChangeProvincia(value: string) {
     this.provinciaCorrente = value;
     this.getCampiProvincia();
   }
 
+  /**
+   * Ongi volta che viene scelto un campo nella combobox, lo assegniamo alla variabile campoCorrente
+   * @param value campo scelto
+   */
   handleChangeCampo(value: string) {
     this.campoCorrente = value;
-    console.log("provincia: "+this.provinciaCorrente);
   }
 
+  /**
+   * Restituisce i tipi di campo da inserire nella combobox
+   * @returns lista tipologie dei campi
+   */
   getTipologieCampo(){
     return this.userService.getTipologieCampo();
   }
 
+  /**
+   * Metodo per stabilire se l'utente ha effettuato l'accesso al proprio profilo o meno
+   * @returns true se l'utente ha effettuato l'accesso al proprio profilo, false altrimenti
+   */
   isLoggedIn(){
     return localStorage.getItem("session") ? true : false;
   }
