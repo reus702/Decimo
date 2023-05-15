@@ -15,6 +15,7 @@
   </ion-header>
 
   <form [formGroup]="newMatchForm" (ngSubmit)="newGame()">
+
     <ion-item lines="full" >
       <ion-label>Giocatori mancanti</ion-label>
       <ion-button name="giocatori_mancanti"  (click)="openPicker()">Seleziona: {{number_player}}</ion-button>
@@ -56,6 +57,52 @@
     <ion-row>
       <ion-col>
         <ion-button [disabled]="newMatchForm.invalid"  type="submit" color="danger" expand="block">Crea partita</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+  <form [formGroup]="newFieldForm" (ngSubmit)="nuovoCampo()">
+    <ion-item>
+      <ion-label>
+        <h1>Aggiungi campo</h1>
+      </ion-label>
+    </ion-item>
+
+    <ion-row>
+      <ion-list>
+        <ion-item>
+          <ion-select placeholder="Provincia campo" label="Seleziona provincia" okText="Conferma" cancelText="Annulla" formControlName="provinciaCampo">
+            <ion-select-option *ngFor="let prov of listaProvince" [value]="prov" >{{prov}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-select placeholder="Tipologia campo" label="Tipo campo" okText="Conferma" cancelText="Annulla" formControlName="tipoCampo">
+            <ion-select-option *ngFor="let tipoCampo of tipologieCampi">{{tipoCampo}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </ion-row>
+
+    <ion-row>
+      <ion-item lines="full">
+        <ion-label position="floating">Descrizione</ion-label>
+        <ion-textarea type="text" name="descCampo" formControlName="descrizioneCampo"></ion-textarea>
+      </ion-item>
+    </ion-row>
+
+    <ion-row>
+      <ion-item lines="full">
+        <ion-label position="floating">Via</ion-label>
+        <ion-textarea type="text" name="viaCampo" formControlName="viaCampo"></ion-textarea>
+      </ion-item>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button [disabled]="newFieldForm.invalid"  type="submit" color="danger" expand="block">Aggiungi campo da gioco</ion-button>
       </ion-col>
     </ion-row>
   </form>

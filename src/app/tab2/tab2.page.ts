@@ -15,6 +15,7 @@ export class Tab2Page {
   users: any[] = [];
   listaProvince: any[] =[];
   listaCampi: any[] = [];
+  tipologieCampi: any[] = [];
   provinciaCorrente: string;
   campoCorrente: string;
 
@@ -22,6 +23,7 @@ export class Tab2Page {
     this.number_player = 0;
     this.listaProvince = this.getProvince();
     this.listaCampi = [];
+    this.tipologieCampi = this.getTipologieCampo();
     this.provinciaCorrente = "";
     this.campoCorrente = "";
   }
@@ -66,25 +68,43 @@ export class Tab2Page {
   }
 
   newMatchForm = new FormGroup({
-    //giocatori_mancanti:new FormControl('',[butt]),
     data_ora:new FormControl('',[Validators.required]),
     info: new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9" "]+$')]),
     provincia:new FormControl('',[Validators.required]),
     campo:new FormControl('',[Validators.required])
   })
 
+  newFieldForm = new FormGroup({
+    provinciaCampo: new FormControl('',[Validators.required]),
+    tipoCampo:new FormControl('',[Validators.required]),
+    descrizioneCampo: new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9" "]+$')]),
+    viaCampo: new FormControl('',[Validators.required,Validators.pattern('[a-zA-Z0-9" "]+$')]),
+  })
+
+
   newGame() {
     const giocatoriRimanenti = this.number_player;
     const infoPartita = this.newMatchForm.controls['info'].value;
     const emailUser = JSON.parse(localStorage.getItem("session") || "").email;
-    let dataPartita =this.newMatchForm.controls['data_ora'].value;
+    let dataPartita = this.newMatchForm.controls['data_ora'].value;
     dataPartita = this.datepipe.transform(dataPartita, 'yyyy-MM-dd HH:mm:ss');
 
     let gameInfo: string[] = [emailUser,giocatoriRimanenti,this.campoCorrente,infoPartita,dataPartita];
     
     this.userService.newGame(gameInfo);
     this.newMatchForm.reset();
-    //form.reset();
+  }
+
+  nuovoCampo() {
+    const provinciaCampo = this.newFieldForm.controls['provinciaCampo'].value;
+    const tipoCampo = this.newFieldForm.controls['tipoCampo'].value;
+    const descCampo = this.newFieldForm.controls['descrizioneCampo'].value;
+    const viaCampo = this.newFieldForm.controls['viaCampo'].value;
+
+    let fieldInfo: string[] | any = [provinciaCampo,tipoCampo,descCampo,viaCampo];
+    
+    this.userService.newField(fieldInfo);
+    this.newFieldForm.reset();
   }
 
   getProvince(){
@@ -103,6 +123,10 @@ export class Tab2Page {
   handleChangeCampo(value: string) {
     this.campoCorrente = value;
     console.log("provincia: "+this.provinciaCorrente);
+  }
+
+  getTipologieCampo(){
+    return this.userService.getTipologieCampo();
   }
 
   isLoggedIn(){

@@ -44,7 +44,6 @@ app.post('/api/signup', (req, res) => {
         });
       });
     })
-  
 });
 
 /*
@@ -79,6 +78,21 @@ app.post('/api/newgame', (req, res) => {
       res.status(500).send('Error executing MySQL query');
     } else {
       console.log('Partita registrata!');
+      res.json(results);
+    }
+  });
+});
+
+/*
+/ Questo metodo salva un nuovo campo da gioco nel db
+*/
+app.post('/api/newfield', (req, res) => {
+  connection.query('INSERT INTO `campi`(`provincia`, `descrizione`, `tipoCampo`, `via`) VALUES ("'+req.body.provinciaCampo+'","'+req.body.descCampo+'","'+req.body.tipoCampo+'","'+req.body.viaCampo+'")', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      console.log('Campo registrato!');
       res.json(results);
     }
   });
@@ -157,6 +171,7 @@ app.post('/api/campiProvincia', (req, res) => {
     }
   });
 });
+
 /*
 / Questo metodo salva i giocatore che partecipano a una partita nel db
 */
@@ -170,8 +185,23 @@ app.post('/api/inserisciPartitaGiocatore', (req, res) => {
     }
   });
 });
+
 app.post('/api/updateGiocatoriMancanti', (req, res) => {
   connection.query('UPDATE partite SET `persone_mancanti` = "'+req.body.personeMancanti+'"  WHERE `id` = "'+req.body.id+'"', (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query', error);
+      res.status(500).send('Error executing MySQL query');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+/*
+/ Questo metodo restituisce i tipi di campo da inserire nella combobox per l'inserimento di un nuovo campo
+*/
+app.post('/api/gettipicampo', (req, res) => {
+  connection.query('SELECT `tipo` FROM `tipo_campo`;', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');

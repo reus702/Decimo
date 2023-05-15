@@ -99,6 +99,18 @@ export class UserService {
     return provList;
   }
 
+  getTipologieCampo(){
+    this.apiUrl = environment.baseUrl+'/gettipicampo';
+    let tipiCampoList:string[] = [];
+
+    this.http.post(this.apiUrl,"").subscribe((result:any) => {
+      for(let i = 0; i < result.length; i ++){
+        tipiCampoList[i] = JSON.parse(JSON.stringify(result[i].tipo));
+      }      
+    });
+    return tipiCampoList;
+  }
+
   logIn(userInfo: string[]){
     const body = {
       email: userInfo[0],
@@ -134,6 +146,21 @@ export class UserService {
     }
     
     this.apiUrl = environment.baseUrl+'/newgame';
+
+    this.http.post(this.apiUrl,body).subscribe((result:any) => {
+      console.log(result);
+    });
+  }
+
+  newField(fieldInfo: string[]) {
+    const body = {
+      provinciaCampo: fieldInfo[0],
+      tipoCampo: fieldInfo[1],
+      descCampo: fieldInfo[2],
+      viaCampo: fieldInfo[3]
+    }
+    
+    this.apiUrl = environment.baseUrl+'/newfield';
 
     this.http.post(this.apiUrl,body).subscribe((result:any) => {
       console.log(result);
