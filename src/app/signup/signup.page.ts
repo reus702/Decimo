@@ -25,9 +25,14 @@ export class SignupPage implements OnInit {
   get passwordFormControl(){return this.signupForm.get('password')}
   get provinciaFormControl(){return this.signupForm.get('provincia')}
 
+  /**
+   * 
+   * @returns lista delle provincie del sistema
+   */
   getProvince(){
     return this.userService.getProvince();
   }
+
   constructor(private userService: UserService) { 
     this.listaProvince = this.getProvince();
     this.provinciaCorrente = "";
@@ -35,7 +40,9 @@ export class SignupPage implements OnInit {
 
   ngOnInit() {
   }
-
+  /**
+   * metodo per registrare l'utente
+   */
   signUpUser() {
     let userInfo: any[] = [this.signupForm.controls['nome'].value ,this.signupForm.controls['email'].value,this.signupForm.controls['password'].value,this.provinciaCorrente];
     this.userService.signUpUser(userInfo);
@@ -43,7 +50,6 @@ export class SignupPage implements OnInit {
 
   handleChange(value: string) {
     this.provinciaCorrente = value;
-    console.log("provincia: "+this.provinciaCorrente);
   }
 
 }

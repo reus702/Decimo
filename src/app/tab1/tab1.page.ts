@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Partita } from '../services/partita';
-import { User } from '../services/user';
 import { UserService } from '../services/user.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common'
@@ -13,6 +12,9 @@ import { DatePipe } from '@angular/common'
 })
 export class Tab1Page {
  
+  /**
+   * controllo del form di ricerca delle partite
+   */
   ricerca = new FormGroup({
     cerca : new FormControl('',[Validators.required, Validators.pattern('[a-zA-Z0-9]+$')])
   })
@@ -28,19 +30,26 @@ export class Tab1Page {
     if(localStorage.getItem("session")?.length == 0){
       this.router.navigate(['/login']);
     }else{
-      this.campo = this.userService.richiestaCampi(JSON.parse(localStorage.getItem("session") || "").provincia);
+      this.campo = this.userService.partiteProvinciaDefault(JSON.parse(localStorage.getItem("session") || "").provincia);
     }
   }
 
-  ricercaCampi(){
-    let cerca = this.ricerca.controls['cerca'].value;
+  /**
+   * metodo che cerca le partite in base al criterio messo in input
+   */
+  ricercaPartite(){
     if(localStorage.getItem("session")?.length == 0){
       this.router.navigate(['/login']);
     }else{
-      this.campo = this.userService.ricercaCampi(cerca,JSON.parse(localStorage.getItem("session") || "").provincia);
+      let cerca = this.ricerca.controls['cerca'].value;
+      this.campo = this.userService.ricercaPartite(cerca);
     }
   }
-
+  /**
+   * 
+   * @param orario orario da formattare
+   * @returns orario della partita formattato
+   */
   getOrario(orario:Date) {
     return this.datepipe.transform(orario, 'dd-MM-yyyy HH:mm');
   }
@@ -50,10 +59,19 @@ export class Tab1Page {
     else return false;
   }
 
+  /**
+   * controlla che l'utente sia loggato
+   * @returns ture se l'utente è loggato false atrimenti
+   */
   isLoggedIn(){
     return localStorage.getItem("session") ? true : false;
   }
 
+  /**
+   * 
+   * @param idPartita partita alla quale l'utente vuole partecipare
+   * @param personeMancanti 
+   */
   giocaPartita(idPartita:number,personeMancanti:number){
   this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email)
     .then(result => {
@@ -63,16 +81,17 @@ export class Tab1Page {
       } else {
         alert("Errore nel registrazione della partita riprovare");
       }
-    })
-    .catch(error => {
-      alert("Errore nel registrazione della partita riprovare");
     });
   }
-
+  /**
+   * 
+   * @param idPartita partita della quale vogliamo conoscere i giocatori
+   */
   getGiocatoriIscritti(idPartita:number) {
     this.giocatori_iscritti = this.userService.getGiocatoriIscritti(idPartita);
   }
 
+  //funzione per chiudre la lista dei giocatori iscirtti
   async chiudiLista( role?: string) {
     return role !== 'gesture';
   }

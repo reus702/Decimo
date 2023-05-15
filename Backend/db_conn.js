@@ -1,7 +1,6 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const { userInfo } = require('os');
 const bcrypt = require("bcrypt");
 
 const app = express();
@@ -15,8 +14,10 @@ const connection = mysql.createConnection({
   database: 'decimodb'
 });
 
+//secret utilizzata per crittografia
 const secret = "aWXZOwI4GlhosrHJOsVePzIYOhZRwGmO"
 
+//db connection
 connection.connect((error) => {
   if (error) {
     console.error('Error connecting to MySQL database', error);
@@ -170,6 +171,8 @@ app.post('/api/inserisciPartitaGiocatore', (req, res) => {
     }
   });
 });
+
+//metodo ceh aggiorn ail numero gi giocatori ad un partita
 app.post('/api/updateGiocatoriMancanti', (req, res) => {
   connection.query('UPDATE partite SET `persone_mancanti` = "'+req.body.personeMancanti+'"  WHERE `id` = "'+req.body.id+'"', (error, results) => {
     if (error) {
@@ -181,6 +184,7 @@ app.post('/api/updateGiocatoriMancanti', (req, res) => {
   });
 });
 
+//questo metodo restituisce la lista dei giocatori iscirtti ad un partita
 app.post('/api/giocatoriIscritti',(req,res)=> {
   connection.query('SELECT nome FROM utenti INNER JOIN partite_giocatore ON partite_giocatore.giocatore = utenti.email WHERE partita = "'+req.body.partita+'"', (error, results) => {
     if (error) {
