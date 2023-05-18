@@ -42,6 +42,7 @@ export class Tab1Page {
       this.router.navigate(['/login']);
     }else{
       let cerca = this.ricerca.controls['cerca'].value;
+      this.campo = [];
       this.campo = this.userService.ricercaPartite(cerca);
     }
   }
@@ -73,6 +74,7 @@ export class Tab1Page {
    * @param personeMancanti 
    */
   giocaPartita(idPartita:number,personeMancanti:number){
+    console.log("Codice partita: "+idPartita)
     this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email, personeMancanti)
   }
   /**
@@ -84,7 +86,7 @@ export class Tab1Page {
   }
 
   //funzione per chiudre la lista dei giocatori iscirtti
-  async chiudiLista( role?: string) {
+  async chiudiLista(role?: string) {
     return role !== 'gesture';
   }
 }

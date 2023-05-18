@@ -94,7 +94,7 @@ app.post('/api/newgame', (req, res) => {
 });
 
 app.post('/api/newfield', (req, res) => {
-  connection.query('INSERT INTO `campi`(`provincia`, `descrizione`, `tipoCampo`, `via`) VALUES ("'+req.body.provinciaCampo+'","'+req.body.descCampo+'","'+req.body.tipoCampo+'","'+req.body.viaCampo+'")', (error, results) => {
+  connection.query('INSERT INTO `campi`(`provincia`, `NomeCampo`, `tipoCampo`, `via`) VALUES ("'+req.body.provinciaCampo+'","'+req.body.descCampo+'","'+req.body.tipoCampo+'","'+req.body.viaCampo+'")', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
@@ -124,7 +124,7 @@ app.post('/api/getprov', (req,res) => {
 */
 app.post('/api/campiPerProvincia', (req, res) => {
 
-  connection.query('SELECT p.* FROM partite as p INNER JOIN campi as c ON c.descrizione = p.campo WHERE c.provincia = "'+req.body.provincia+'" AND p.orario >= CURRENT_TIMESTAMP AND p.persone_mancanti>=0', (error, results) => {
+  connection.query('SELECT p.* FROM partite as p INNER JOIN campi as c ON c.NomeCampo = p.campo WHERE c.provincia = "'+req.body.provincia+'" AND p.orario >= CURRENT_TIMESTAMP AND p.persone_mancanti>=0', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
@@ -138,11 +138,12 @@ app.post('/api/campiPerProvincia', (req, res) => {
 / Questo metodo cerca una partita per parola chiave
 */
 app.post('/api/ricercaPartite', (req, res) => {
-  connection.query('SELECT DISTINCT * FROM `partite` INNER JOIN `campi` ON  `partite`.campo = `campi`.descrizione WHERE  persone_mancanti>=0 AND orario >= CURRENT_TIMESTAMP AND (`organizzatore` = "'+req.body.ricerca+'" OR `campo` = "'+req.body.ricerca+'"  OR  `campi`.`descrizione`  = "'+req.body.ricerca+'" OR campi.provincia ="'+req.body.ricerca+'") ', (error, results) => {
+  connection.query('SELECT id, NomeCampo, descrizione, persone_mancanti, orario, provincia, via FROM `partite` INNER JOIN `campi` ON  `partite`.campo = `campi`.NomeCampo WHERE  persone_mancanti>0 AND orario >= CURRENT_TIMESTAMP AND (`organizzatore` = "'+req.body.ricerca+'" OR `campo` = "'+req.body.ricerca+'"  OR  `campi`.`NomeCampo`  = "'+req.body.ricerca+'" OR campi.provincia ="'+req.body.ricerca+'") ', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
     } else {
+      console.log("partitte trovTE: "+results);
       res.json(results);
     }
   });
@@ -153,7 +154,7 @@ app.post('/api/ricercaPartite', (req, res) => {
 */
 app.post('/api/ricercaPartiteGiocate', (req, res) => {
   //connection.query('SELECT * FROM `partite_giocatore` WHERE `giocatore` = "'+req.body.userEmail+'" ', (error, results) => {
-  connection.query('SELECT * FROM `partite` as p,`partite_giocatore` as pg, campi as c WHERE pg.`giocatore` = "'+req.body.userEmail+'" AND pg.`partita` = p.`id` AND c.`descrizione` = p.`campo`;', (error, results) => {
+  connection.query('SELECT id, NomeCampo, descrizione, persone_mancanti, orario, provincia, via FROM `partite` as p,`partite_giocatore` as pg, campi as c WHERE pg.`giocatore` = "'+req.body.userEmail+'" AND pg.`partita` = p.`id` AND c.`NomeCampo` = p.`campo`;', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');
@@ -168,7 +169,7 @@ app.post('/api/ricercaPartiteGiocate', (req, res) => {
 / Questo metodo restituisce i campi presenti nella provincia passata
 */
 app.post('/api/campiProvincia', (req, res) => {
-  connection.query('SELECT `descrizione` FROM `campi` WHERE `provincia`="'+req.body.provincia+'";', (error, results) => {
+  connection.query('SELECT `NomeCampo` FROM `campi` WHERE `provincia`="'+req.body.provincia+'";', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
       res.status(500).send('Error executing MySQL query');

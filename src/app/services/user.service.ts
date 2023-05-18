@@ -45,9 +45,8 @@ export class UserService {
       if (!result || Object.keys(result).length == 0) {
         console.log("NESSUNA PARTITA DISPONIBILE CON QUESTA PROVINCIA");
       } else {
-        for(let i = 0 ; i<Object.keys(result).length ;i++)
-        {
-          campi[i] = new Partita(result[i].id,result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via); //creo oggetto utente
+        for(let i = 0 ; i<Object.keys(result).length ;i++){
+          campi[i] = new Partita(result[i].id,result[i].descrizione,provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via, result[i].NomeCampo);
         }
       }
     });
@@ -69,7 +68,8 @@ export class UserService {
         console.log("NESSUNA PARTITA DISPONIBILE CON QUESTA RICERCA");
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++) {
-          partite[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via); //creo oggetto 
+          partite[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via, result[i].NomeCampo);
+          console.log(partite[i].toStringDatiPartita);
         }
       }
     });
@@ -93,7 +93,7 @@ export class UserService {
         console.log("NESSUN CAMPO DISPONIBILE CON QUESTA PROVINCIA");
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++) {
-          campi[i] = JSON.parse(JSON.stringify(result[i].descrizione));
+          campi[i] = JSON.parse(JSON.stringify(result[i].NomeCampo));
         }
       }
     });
@@ -175,7 +175,8 @@ export class UserService {
         console.log("NESSUNA PARTITA DISPONIBILE");
       } else {
         for(let i = 0 ; i<Object.keys(result).length ;i++) {
-          partiteGiocate[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via); //creo oggetto partita
+          partiteGiocate[i] = new Partita(result[i].id,result[i].descrizione,result[i].provincia,result[i].campo,result[i].persone_mancanti,result[i].orario,result[i].via, result[i].NomeCampo); //creo oggetto partita
+         
         }
       }
     }); 
@@ -190,17 +191,17 @@ export class UserService {
   inserisciPartitaGiocatore(idPartita:number,giocatore:string, persone_mancanti:number){
     const body = {
       userEmail: giocatore,
-      idPartita:idPartita
+      idPartita: idPartita
     }
     this.apiUrl = environment.baseUrl + '/inserisciPartitaGiocatore';
 
     
     this.http.post(this.apiUrl,body).subscribe((result: any) => {
       if (!result || Object.keys(result).length == 0) {
-        alert("Errore nell'iscirizione. Il giocatore partecipa gia'.");
+        alert("Errore nell'iscrizione. Il giocatore partecipa gia'.");
       } else {
-        alert("Giocatore iscirtto alla partita correttamente");
-        this.aggiornaGiocatoriMancanti(idPartita,persone_mancanti);
+        alert("Giocatore iscritto alla partita correttamente");
+        this.aggiornaGiocatoriMancanti(idPartita,persone_mancanti-1);
       }
     });
   

@@ -1,75 +1,75 @@
-<div *ngIf="isLoggedIn()">
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-    HOME
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<div *ngIf="isLoggedIn()" #page>
+  <ion-header [translucent]="true">
     <ion-toolbar>
-      <ion-title size="large" vertical="top" horizontal="">Decimo</ion-title>
+      <ion-title>
+      HOME
+      </ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Home"></app-explore-container>
-  <ion-toolbar>
-    <form [formGroup]="ricerca" (ngSubmit)="ricercaPartite()" >
-      <ion-item lines="full">
-        <ion-searchbar name="cerca" formControlName="cerca"></ion-searchbar>
-      </ion-item>
-    </form>
-  </ion-toolbar>
-  <ion-item *ngIf="controlloLunghezza()">
-      Nessun campo salvato in questa provincia nel sistema
-  </ion-item>
+  <ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large" vertical="top" horizontal="">Decimo</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-  <ion-list [inset]="true">
-    <ion-item *ngFor="let app of campo">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>NOME CAMPO : {{app.tipo}}</ion-card-title>
-          <ion-card-subtitle>PROVINCIA CAMPO : {{app.provincia}}</ion-card-subtitle>
-        </ion-card-header>
-      
-        <ion-card-content>
-          DESCRIZIONE PARTITA : {{app.descrizione}}
-        </ion-card-content>
-        <ion-card-content>
-          PERSONE MANCANTI : {{app.personeMancanti}}
-        </ion-card-content>
-        <ion-card-content>
-          VIA DEL CAMPO : {{app.via}}
-        </ion-card-content>
-        <ion-card-content>
-          ORARIO : {{getOrario(app.orario)}}
-        </ion-card-content>
-        <ion-button fill="clear" (click)="giocaPartita(app.id,app.personeMancanti)">Gioca alla partita</ion-button>
-        <ion-button fill="clear" id="open-modal" (click)="getGiocatoriIscritti(app.id)">Visualizza giocatori iscritti</ion-button>
-        <ion-modal #lista trigger="open-modal" [canDismiss]="chiudiLista()" >
-          <ng-template>
-            <ion-header>
-              <ion-toolbar>
-                <ion-title>Giocatori iscirtti alla partita</ion-title>
-                <ion-buttons slot="end">
-                  <ion-button (click)="lista.dismiss()">Chiudi</ion-button>
-                </ion-buttons>
-              </ion-toolbar>
-            </ion-header>
-            <ion-content class="ion-padding">
-              <ion-item *ngFor="let giocatore of giocatori_iscritti">
-                <label>{{giocatore}}</label><br>
-              </ion-item>
-            </ion-content>
-          </ng-template>
-        </ion-modal>
-      </ion-card>
+    <app-explore-container name="Home"></app-explore-container>
+    <ion-toolbar>
+      <form [formGroup]="ricerca" (ngSubmit)="ricercaPartite()" >
+        <ion-item lines="full">
+          <ion-searchbar name="cerca" formControlName="cerca"></ion-searchbar>
+        </ion-item>
+      </form>
+    </ion-toolbar>
+    <ion-item *ngIf="controlloLunghezza()">
+        Nessun campo salvato in questa provincia nel sistema
     </ion-item>
 
-  </ion-list>
+    <ion-list [inset]="true">
+      <ion-item *ngFor="let app of campo">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>NOME CAMPO : <br>{{app.nomeCampo}}</ion-card-title>
+            <ion-card-subtitle>PROVINCIA CAMPO : {{app.provincia}}</ion-card-subtitle>
+          </ion-card-header>
+        
+          <ion-card-content>
+            DESCRIZIONE PARTITA : {{app.descrizione}}
+          </ion-card-content>
+          <ion-card-content>
+            PERSONE MANCANTI : {{app.personeMancanti}}
+          </ion-card-content>
+          <ion-card-content>
+            VIA DEL CAMPO : {{app.via}}
+          </ion-card-content>
+          <ion-card-content>
+            ORARIO : {{getOrario(app.orario)}}
+          </ion-card-content>
+          <ion-button fill="clear" (click)="giocaPartita(app.id,app.personeMancanti)">Gioca alla partita</ion-button>
+          <ion-button fill="clear" id="open-modal" (click)="getGiocatoriIscritti(app.id)">Visualizza giocatori iscritti</ion-button>
+          <ion-modal #lista trigger="open-modal" [canDismiss]="chiudiLista()" [presentingElement]="page">
+            <ng-template>
+              <ion-header>
+                <ion-toolbar>
+                  <ion-title>Giocatori iscritti alla partita</ion-title>
+                  <ion-buttons slot="end">
+                    <ion-button (click)="lista.dismiss()">Chiudi</ion-button>
+                  </ion-buttons>
+                </ion-toolbar>
+              </ion-header>
+              <ion-content class="ion-padding">
+                <ion-item *ngFor="let giocatore of giocatori_iscritti">
+                  <label>{{giocatore}}</label><br>
+                </ion-item>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
+        </ion-card>
+      </ion-item>
 
-</ion-content>
+    </ion-list>
+
+  </ion-content>
 
 </div>

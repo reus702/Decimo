@@ -128,6 +128,7 @@ export class Tab2Page {
    * @returns lista campi
    */
   getCampiProvincia(){
+    console.log("Prima di cercare nel db. "+this.provinciaCorrente)
     this.listaCampi = this.userService.listaCampiPerProvincia(this.provinciaCorrente);
   }
 
