@@ -4,6 +4,7 @@ import { Partita } from '../services/partita';
 import { UserService } from '../services/user.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common'
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -21,10 +22,14 @@ export class Tab1Page {
   
   campo: Partita[] | undefined;
   giocatori_iscritti: string[];
+  esito: boolean;
 
   constructor(private router: Router,private userService: UserService,public datepipe: DatePipe) {
     this.giocatori_iscritti = [];
+    this.esito = false;
   }
+
+  
 
   ngOnInit(){
     if(localStorage.getItem("session")?.length == 0){
@@ -74,15 +79,16 @@ export class Tab1Page {
    * @param personeMancanti 
    */
   giocaPartita(idPartita:number,personeMancanti:number){
-    console.log("Codice partita: "+idPartita)
-    this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email, personeMancanti)
+    this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email)
+    this.userService.aggiornaGiocatoriMancanti(idPartita,personeMancanti-1);
+   
   }
   /**
    * 
    * @param idPartita partita della quale vogliamo conoscere i giocatori
    */
   getGiocatoriIscritti(idPartita:number) {
-    this.giocatori_iscritti = this.userService.getGiocatoriIscritti(idPartita);
+    this.userService.getGiocatoriIscritti(idPartita);
   }
 
   //funzione per chiudre la lista dei giocatori iscirtti

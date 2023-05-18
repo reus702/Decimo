@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { User } from './user';
 import { Partita } from './partita';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { Partita } from './partita';
 export class UserService {
 
   private apiUrl = "";
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private alertController: AlertController) { }
   /**
    * registazione utente
    * @param userInfo informazioni dell'utente
@@ -27,7 +28,11 @@ export class UserService {
     
     this.apiUrl = environment.baseUrl+'/signup';
     this.http.post(this.apiUrl,body).subscribe((result:any) => {
-      console.log(result);
+      if(result){
+        this.presentAlert("Iscrizione alla piattaforma","Iscrizione avvenuta correttamente.");
+      }else{
+        this.presentAlert("Iscrizione alla piattaforma","Errore durante l'iscrizione.");  
+      }
     });
   }
 
@@ -156,7 +161,11 @@ export class UserService {
     this.apiUrl = environment.baseUrl+'/newgame';
 
     this.http.post(this.apiUrl,body).subscribe((result:any) => {
-      console.log(result);
+      if(result){
+        this.presentAlert("Creazione Partita","Partita creata correttamente");  
+      }else{
+        this.presentAlert("Creazione Partita","Errore durante la creazione della partita.");  
+      }
     });
   }
 
@@ -188,23 +197,31 @@ export class UserService {
    * @param giocatore giocatore che partecipa alla partita
    * @returns 
    */
-  inserisciPartitaGiocatore(idPartita:number,giocatore:string, persone_mancanti:number){
+  inserisciPartitaGiocatore(idPartita:number,giocatore:string){
     const body = {
       userEmail: giocatore,
       idPartita: idPartita
     }
     this.apiUrl = environment.baseUrl + '/inserisciPartitaGiocatore';
-
-    
+     
     this.http.post(this.apiUrl,body).subscribe((result: any) => {
-      if (!result || Object.keys(result).length == 0) {
-        alert("Errore nell'iscrizione. Il giocatore partecipa gia'.");
+      if (!result) {
+        this.presentAlert("Iscrizione partita","Errore nell'iscrizione. Il giocatore partecipa gia'.");
       } else {
-        alert("Giocatore iscritto alla partita correttamente");
-        this.aggiornaGiocatoriMancanti(idPartita,persone_mancanti-1);
+        this.presentAlert("iscirzione partita","Giocatore iscritto alla partita correttamente");
+        
       }
     });
-  
+  }
+
+  async presentAlert(header:string,messaggio:string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: messaggio,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   /**
@@ -235,21 +252,18 @@ export class UserService {
    */
   getGiocatoriIscritti(idPartita:number){
     const body={partita: idPartita}
-    let giocatori: string[]=[];
+    let giocatori: string = "";
 
     this.apiUrl = environment.baseUrl + '/giocatoriIscritti';
     this.http.post(this.apiUrl,body).subscribe((result: any) => {
       if(!result){
-        console.log("Errore nell'estrazione dei giocatori iscritti");
+        this.presentAlert("Giocatori iscritti","non ci sono giocatori iscritti ancora");
       }
-      console.log("Giocatori estratti con successo");
       for(let i = 0 ; i<Object.keys(result).length ;i++) {
-        console.log(result[i].nome);
-        giocatori[i] = result[i].nome;
+        giocatori += result[i].nome + "\n";
       }
+      this.presentAlert("Giocatori iscritti",giocatori);
     })
-
-    return giocatori;
   }
 
   getTipologieCampo(){
@@ -275,7 +289,11 @@ export class UserService {
     this.apiUrl = environment.baseUrl+'/newfield';
 
     this.http.post(this.apiUrl,body).subscribe((result:any) => {
-      console.log(result);
+      if(result){
+        this.presentAlert("Aggiunta campo","campo aggiunto correttamente");
+      }else{
+        this.presentAlert("Aggiunta campo","errore nella registrazione del campo");
+      }
     });
   }
 }
