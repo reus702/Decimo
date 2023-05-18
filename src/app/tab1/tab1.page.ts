@@ -73,15 +73,7 @@ export class Tab1Page {
    * @param personeMancanti 
    */
   giocaPartita(idPartita:number,personeMancanti:number){
-  this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email)
-    .then(result => {
-      if (result) {
-        this.userService.aggiornaGiocatoriMancanti(idPartita,personeMancanti-1);
-        alert("Il giocatore parteciperà alla partita");
-      } else {
-        alert("Errore nel registrazione della partita riprovare");
-      }
-    });
+    this.userService.inserisciPartitaGiocatore(idPartita,JSON.parse(localStorage.getItem("session") || "").email, personeMancanti)
   }
   /**
    * 

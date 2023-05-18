@@ -160,8 +160,12 @@ app.post('/api/campiProvincia', (req, res) => {
 app.post('/api/inserisciPartitaGiocatore', (req, res) => {
   connection.query('INSERT INTO `partite_giocatore`(`giocatore`, `partita`) VALUES ("'+req.body.userEmail+'","'+req.body.idPartita+'")', (error, results) => {
     if (error) {
-      console.error('Error executing MySQL query', error);
-      res.status(500).send('Error executing MySQL query');
+      if(error.code == 'ER_DUP_ENTRY'){
+        res.json(results);
+      }else{
+        console.error('Error executing MySQL query', error);
+        res.status(500).send('Error executing MySQL query');
+      }
     } else {
       res.json(results);
     }
@@ -173,7 +177,6 @@ app.post('/api/updateGiocatoriMancanti', (req, res) => {
   connection.query('UPDATE partite SET `persone_mancanti` = "'+req.body.personeMancanti+'"  WHERE `id` = "'+req.body.id+'"', (error, results) => {
     if (error) {
       console.error('Error executing MySQL query', error);
-      res.status(500).send('Error executing MySQL query');
     } else {
       res.json(results);
     }

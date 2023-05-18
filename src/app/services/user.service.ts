@@ -187,27 +187,23 @@ export class UserService {
    * @param giocatore giocatore che partecipa alla partita
    * @returns 
    */
-  inserisciPartitaGiocatore(idPartita:number,giocatore:string) : Promise<boolean>{
+  inserisciPartitaGiocatore(idPartita:number,giocatore:string, persone_mancanti:number){
     const body = {
       userEmail: giocatore,
       idPartita:idPartita
     }
     this.apiUrl = environment.baseUrl + '/inserisciPartitaGiocatore';
 
-    return new Promise((resolve, reject) => {
-      this.http.post(this.apiUrl,body).subscribe((result: any) => {
-        if (!result || Object.keys(result).length == 0) {
-          console.log("NESSUNA PARTITA DISPONIBILE");
-          resolve(false);
-        } else {
-          console.log("PARTITA REGISTRATA");
-          resolve(true);
-        }
-      }, error => {
-        console.log("ERRORE: " + error);
-        reject(false);
-      }); 
+    
+    this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      if (!result || Object.keys(result).length == 0) {
+        alert("Errore nell'iscirizione. Il giocatore partecipa gia'.");
+      } else {
+        alert("Giocatore iscirtto alla partita correttamente");
+        this.aggiornaGiocatoriMancanti(idPartita,persone_mancanti);
+      }
     });
+  
   }
 
   /**
@@ -223,6 +219,7 @@ export class UserService {
 
     this.apiUrl = environment.baseUrl + '/updateGiocatoriMancanti';
     this.http.post(this.apiUrl,body).subscribe((result: any) => {
+      
       if (!result || Object.keys(result).length == 0) {
         console.log("ERRORE");
       } else {
